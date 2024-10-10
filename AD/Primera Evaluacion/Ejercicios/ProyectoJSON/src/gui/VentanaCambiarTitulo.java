@@ -57,7 +57,6 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCambiarTitulo) {
-            // Obtener el nuevo título del campo de texto
             String nuevoTitulo = textoNuevoTitulo.getText().trim();
             if (!nuevoTitulo.isEmpty()) {
                 // Lógica para cambiar el título en la aplicación
@@ -66,7 +65,10 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
                 if (exito) {
                     JOptionPane.showMessageDialog(this, "El título se ha cambiado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                     dispose(); // Cerrar solo la ventana de cambiar título
-                    // Aquí puedes volver al menú del autor si es necesario
+
+                    app.cerrarSesion();  // Cierra todas las ventanas abiertas
+                    app.mostrarVentanaInicioSesion();  // Muestra la ventana de inicio de sesión
+
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo cambiar el título.", "Error", JOptionPane.ERROR_MESSAGE);
                 }

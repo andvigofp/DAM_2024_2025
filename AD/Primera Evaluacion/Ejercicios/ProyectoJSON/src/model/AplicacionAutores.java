@@ -19,8 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class AplicacionAutores
-{
+public class AplicacionAutores {
 
     private final String RUTA_FICHERO = "./src/model/autoresJSON.txt";
     private VentanaInicioSesion ventanaInicioSesion;
@@ -31,29 +30,41 @@ public class AplicacionAutores
     private VentanaBorrarAutor ventanaBorrarAutor;
 
     // Método para crear el archivo .txt
-    private void crearFicheroJson()	{
+    private void crearFicheroJson() {
         File file = new File(RUTA_FICHERO);
         if (!file.exists()) {
             try {
+                // Intentar crear el archivo si no existe
                 file.createNewFile();
-                // Inicializar el archivo con un arreglo vacío
-                try (FileWriter writer = new FileWriter(file)) {
-                    writer.write("[]"); // Escribe un arreglo vacío
+
+                // Verificar si el archivo se ha creado correctamente
+                if (file.exists()) {
+                    System.out.println("Archivo creado exitosamente.");
+
+                    // Inicializar el archivo con un arreglo vacío
+                    try (FileWriter writer = new FileWriter(file)) {
+                        writer.write("[]"); // Escribe un arreglo vacío
+                    }
+                } else {
+                    System.out.println("El archivo no se creó.");
+                    JOptionPane.showMessageDialog(null, "El archivo no se pudo crear.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (IOException e) {
-                System.out.println("No se ha podido crear el archivo ");
+                System.out.println("No se ha podido crear el archivo.");
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error al crear el archivo JSON.", "Error", JOptionPane.ERROR_MESSAGE);
             }
+        } else {
+            System.out.println("El archivo JSON ya existe.");
         }
     }
 
     // Método para guardar los datos de vuelta en el archivo JSON
     private void guardarFicheroJson(JSONArray autores) {
-        try (FileWriter file = new FileWriter(RUTA_FICHERO)){
-            file.write(autores.toString());
-            file.write(System.lineSeparator()); // Agregar salto de línea
+        try (FileWriter file = new FileWriter(RUTA_FICHERO)) {
+            file.write(autores.toString(4)); // El '4' indica el nivel de indentación (4 espacios)
             file.flush();
-        }catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("Error al guardar el fichero.");
             e.printStackTrace();
         }
@@ -80,87 +91,79 @@ public class AplicacionAutores
     }
 
     // Método que recorre JSONArray de autores para recorrer la posición del autor que desea borrar
-    private int obtenerPosicionAutor(String nombreAutor, JSONArray autores){
+    private int obtenerPosicionAutor(String nombreAutor, JSONArray autores) {
         for (int i = 0; i < autores.length(); i++) {
             JSONObject autor = autores.getJSONObject(i);
-            if (autor.getString("nombre").equals(nombreAutor)) {
-                return i; // Retorna la posición si encuentra el autor
+
+            // Aquí estamos comparando el nombre del autor
+            String autorNombre = autor.getString("autor");
+            System.out.println("Buscando autor: " + nombreAutor);
+            System.out.println("Comparando con: " + autorNombre);
+
+            if (autorNombre.equalsIgnoreCase(nombreAutor)) {
+                return i; // Devolver la posición si se encuentra el autor
             }
         }
-        return -1; // Retorna -1 si no encuentra el autor
+        return -1; // No se encontró el autor
     }
 
-    private JSONObject obtenerAutoresJson(String nombreAutor){
-        JSONArray autores = obtenerAutoresJson(); // Otiene la lista de autores
-
-        if (autores != null) {
-            for (int i=0; i<autores.length(); i++) {
-                JSONObject autor = autores.getJSONObject(i);
-
-                // Compara el nombre del autor con el nombre buscado
-                if (autor.getString("nombre").equals(nombreAutor)) {
-                    return autor; // Retorna JSONObject del autor enocntrado
-                }
+    private JSONObject obtenerAutoresJson(String nombreAutor) {
+        JSONArray autores = obtenerAutoresJson(); // Obtén la lista de autores
+        for (int i = 0; i < autores.length(); i++) {
+            JSONObject autor = autores.getJSONObject(i);
+            // Compara el nombre del autor (puedes ajustar la comparación si es necesario)
+            if (autor.getString("autor").equalsIgnoreCase(nombreAutor)) {
+                System.out.println("Autor encontrado: " + autor.toString()); // Mensaje de depuración
+                return autor; // Retorna el autor si se encuentra
             }
         }
+        System.out.println("Autor no encontrado: " + nombreAutor); // Mensaje de depuración
         return null; // Retorna null si no se encuentra el autor
     }
 
 
     // Método para ejecutar
-    public void ejecutar(){
+    public void ejecutar() {
         crearFicheroJson();
         ventanaInicioSesion = new VentanaInicioSesion(this);
         ventanaInicioSesion.setVisible(true);
     }
 
     public boolean iniciarValidacion(String nombreAutor, String tituloLibroAutor) {
-        // Obtener la lista de autores
-        JSONArray autores = obtenerAutoresJson();
+        JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
 
         if (autores != null) {
-            // Buscar la posición del autor
-            int posicionAutor = obtenerPosicionAutor(nombreAutor, autores);
+            boolean tituloEncontrado = false; // Inicializa como falso
 
-            if (posicionAutor != -1) {
-                // El autor existe, ahora verificar el título
-                JSONObject autor = autores.getJSONObject(posicionAutor);
-                JSONArray libros = autor.getJSONArray("libros");
+            // Itera sobre cada autor en el JSON
+            for (int i = 0; i < autores.length(); i++) {
+                JSONObject libro = autores.getJSONObject(i);
 
-                // Comprobar si el título corresponde al autor
-                boolean tituloEncontrado = false;
-                for (int i = 0; i < libros.length(); i++) {
-                    if (libros.getString(i).equals(tituloLibroAutor)) {
-                        tituloEncontrado = true;
-                        break;
+                // Verifica si el autor coincide
+                if (libro.getString("autor").equalsIgnoreCase(nombreAutor)) {
+                    // Verifica si el título coincide
+                    if (libro.getString("titulo").equalsIgnoreCase(tituloLibroAutor)) {
+                        tituloEncontrado = true; // Título encontrado
+                        break; // Sale del bucle
                     }
                 }
+            }
 
-                if (!tituloEncontrado) {
-                    // Mostrar mensaje si el título no corresponde con el autor
-                    JOptionPane.showMessageDialog(null, "Combinación de autor y título no existente.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                    return false; // No se puede validar
-                }
-
-                // Si el título es correcto, continuar con la validación
+            if (tituloEncontrado) {
                 return true; // Validación exitosa
-
             } else {
-                // Mostrar mensaje si el autor no existe
-                JOptionPane.showMessageDialog(null, "El autor no existe.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Combinación de autor y título no existente.", "Error", JOptionPane.INFORMATION_MESSAGE);
                 return false; // No se puede validar
             }
-            
         } else {
-            // Si no se puede obtener el JSON, manejar el error
             JOptionPane.showMessageDialog(null, "No se pudo obtener la lista de autores.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
 
-    public void cerrarSesion(){
+    public void cerrarSesion() {
         // Cerrar todas las ventanas relacionadas con la sesión del autor
-        if (ventanaMenuAutor !=null) ventanaMenuAutor.dispose();
+        if (ventanaMenuAutor != null) ventanaMenuAutor.dispose();
         if (ventanaVerDatos != null) ventanaVerDatos.dispose();
         if (ventanaBorrarAutor != null) ventanaBorrarAutor.dispose();
         if (ventanaCambiarTitulo != null) ventanaCambiarTitulo.dispose();
@@ -170,17 +173,11 @@ public class AplicacionAutores
         System.out.println("Sesión cerrada correctamente.");
     }
 
-    public void crearAutor(String nombre, String titulo, String paginas, String editorial){
-        // Crear un nuevo objecto JSON para el autor
+    public void crearAutor(String nombre, String titulo, String paginas, String editorial) {
+        // Crear un nuevo objeto JSON para el autor
         JSONObject nuevoAutor = new JSONObject();
-        nuevoAutor.put("nombre", nombre);
-
-        // Crear un arreglo JSON para los libros
-        JSONArray libros = new JSONArray();
-        libros.put(titulo); // Agregar el título del libro al arreglo
-        nuevoAutor.put("libros", libros);
-
-        // Agregar más detalles, si es necesario
+        nuevoAutor.put("autor", nombre);
+        nuevoAutor.put("titulo", titulo);
         nuevoAutor.put("paginas", paginas);
         nuevoAutor.put("editorial", editorial);
 
@@ -192,7 +189,7 @@ public class AplicacionAutores
             // Agregar el nuevo autor al arreglo de autores
             autores.put(nuevoAutor);
 
-            // Guardar la lista actualizada de autores en el archivo JSON
+            // Guardar la lista actualizada de autores en el archivo JSON con formato bonito
             guardarFicheroJson(autores);
 
             System.out.println("Autor creado con éxito: " + nombre);
@@ -202,56 +199,64 @@ public class AplicacionAutores
     }
 
     public boolean cambiarTituloLibro(String nombreAutor, String nuevoTitulo) {
-            // Obtener la lista de autores
-            JSONArray autores = obtenerAutoresJson();
+        // Obtener la lista de autores
+        JSONArray autores = obtenerAutoresJson();
 
-            if (autores != null) {
-                // Obtener la posición del autor
-                int posicion = obtenerPosicionAutor(nombreAutor, autores);
-                if (posicion != -1) {
-                    // Obtener el objeto autor
-                    JSONObject autor = autores.getJSONObject(posicion);
-
-                    // Obtener el arreglo de títulos de libros del autor
-                    JSONArray libros = autor.getJSONArray("libros");
-
-                    // Asegúrate de que haya libros en el arreglo
-                    if (libros.length() > 0) {
-                        // Cambiar el título del primer libro como ejemplo
-                        libros.put(0, nuevoTitulo); // Cambia 0 por la posición del libro que deseas cambiar
-
-                        // Guardar el JSONArray actualizado en el archivo
-                        guardarFicheroJson(autores);
-
-                        return true; // Retorna true si el cambio fue exitoso
-                    } else {
-                        System.out.println("No hay libros asociados al autor.");
-                    }
-                } else {
-                    System.out.println("Autor no encontrado.");
-                }
-            } else {
-                System.out.println("No se pudo obtener la lista de autores.");
-            }
-            return false; // Retorna false si no se pudo cambiar el título
-        }
-
-    // Método para borrar el autor de la lista de JSONArray de autores
-    public boolean borrarAutor(String nombreAutor){
-        JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
-        if (autores !=null) {
-            int posicion = obtenerPosicionAutor(nombreAutor, autores); // Obtener la posición del autor a borrar
-
+        if (autores != null) {
+            // Obtener la posición del autor buscando por nombre del autor (y no por el título)
+            int posicion = obtenerPosicionAutor(nombreAutor, autores);
             if (posicion != -1) {
-                autores.remove(posicion); // Borrar el autor de la lista
-                guardarFicheroJson(autores); // Guardar la lista actualizada en el fichero
+                // Obtener el objeto autor
+                JSONObject autor = autores.getJSONObject(posicion);
+
+                // Cambiar el título (es un String)
+                autor.put("titulo", nuevoTitulo);
+
+                // Guardar el JSONArray actualizado en el archivo
+                guardarFicheroJson(autores);
+
+                System.out.println("Título cambiado correctamente.");
                 return true;
+            } else {
+                System.out.println("Autor no encontrado.");
             }
+        } else {
+            System.out.println("No se pudo obtener la lista de autores.");
         }
         return false;
     }
 
-    public void mostrarVentanaCrearAutor(){
+    // Método para borrar el autor de la lista de JSONArray de autores
+    public boolean borrarAutor(String nombreAutor) {
+        JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
+        if (autores != null) {
+            boolean autorEliminado = false; // Variable para verificar si se eliminó al menos un autor
+
+            // Usamos un bucle para recorrer el array y eliminar todos los libros del autor
+            for (int i = autores.length() - 1; i >= 0; i--) { // Iterar desde el final hacia el inicio
+                JSONObject libro = autores.getJSONObject(i);
+                // Comprobar si el autor coincide
+                if (libro.getString("autor").equalsIgnoreCase(nombreAutor)) {
+                    autores.remove(i); // Borrar el objeto del autor
+                    autorEliminado = true; // Indicar que se ha eliminado un libro del autor
+                }
+            }
+
+            if (autorEliminado) {
+                guardarFicheroJson(autores); // Guardar la lista actualizada en el fichero
+                return true; // Retornar true si se eliminó al menos un autor
+            } else {
+                // El autor no fue encontrado
+                JOptionPane.showMessageDialog(null, "No se encontró el autor a borrar.", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } else {
+            // Manejar el caso en el que no se pudo obtener la lista de autores
+            JOptionPane.showMessageDialog(null, "No se pudo obtener la lista de autores.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false; // Retornar false si no se pudo obtener la lista de autores
+    }
+
+    public void mostrarVentanaCrearAutor() {
         // Comprobar si la ventana ya está creada, si no, crear una nueva instancia
         if (ventanaCrearAutor == null) {
             ventanaCrearAutor = new VentanaCrearAutor(this);
@@ -261,7 +266,18 @@ public class AplicacionAutores
         ventanaCrearAutor.setVisible(true);
     }
 
-    public void mostrarVentanaVerDatos(String nombreAutor){
+    // Método para mostar la Ventana de valiación
+    public void mostrarVentanaInicioSesion() {
+        // Comprobar si la ventana ya está creada, si no, crear una nueva instancia
+        if (ventanaInicioSesion == null) {
+            ventanaInicioSesion = new VentanaInicioSesion(this);
+        }
+
+        // Hacer visible la ventana
+        ventanaInicioSesion.setVisible(true);
+    }
+
+    public void mostrarVentanaVerDatos(String nombreAutor) {
         // Obtener los datos del autor desde el JSON
         JSONObject autorJson = obtenerAutoresJson(nombreAutor);
 
@@ -283,26 +299,17 @@ public class AplicacionAutores
     }
 
     public void mostrarVentanaCambiarTitulo(String nombreAutor) {
-        // Obtener los datos del autor desde el JSON
+        // Obtener los datos del autor desde el JSON usando su nombre
         JSONObject autorJson = obtenerAutoresJson(nombreAutor);
 
         // Comprobar si el autor fue encontrado
         if (autorJson != null) {
-            // Obtener el arreglo de títulos de libros del autor
-            JSONArray libros = autorJson.getJSONArray("libros");
+            // Obtener el título actual (como un String, no JSONArray)
+            String tituloActual = autorJson.getString("titulo"); // Es un String, no un JSONArray
 
-            // Aquí asumimos que el primer libro es el que queremos cambiar
-            // Si hay múltiples libros, podrías implementar lógica adicional para seleccionar uno
-            if (libros.length() > 0) {
-                String tituloActual = libros.getString(0); // Obtener el título actual
-
-                // Crear la ventana de cambiar título y pasar el título actual
-                VentanaCambiarTitulo ventanaCambiarTitulo = new VentanaCambiarTitulo(this, nombreAutor);
-                ventanaCambiarTitulo.setVisible(true);
-            } else {
-                // Mensaje informativo si no hay libros
-                JOptionPane.showMessageDialog(null, "El autor no tiene libros registrados.", "Información", JOptionPane.INFORMATION_MESSAGE);
-            }
+            // Crear la ventana de cambiar título y pasar el nombre del autor (no el título)
+            VentanaCambiarTitulo ventanaCambiarTitulo = new VentanaCambiarTitulo(this, nombreAutor); // Pasar nombreAutor
+            ventanaCambiarTitulo.setVisible(true);
         } else {
             // Mensaje informativo si no se encuentra al autor
             JOptionPane.showMessageDialog(null, "Autor no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);

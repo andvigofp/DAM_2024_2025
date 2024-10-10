@@ -97,10 +97,10 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCrear) {
-            String nombreAutor = textoNombreAutor.getText().toLowerCase().trim();
-            String tituloLibro = textoTituloLibro.getText().toLowerCase().trim();
+            String nombreAutor = textoNombreAutor.getText().trim();
+            String tituloLibro = textoTituloLibro.getText().trim();
             String paginas = textoPaginas.getText().trim();
-            String editorial = textoEditorial.getText().toLowerCase().trim();
+            String editorial = textoEditorial.getText().trim();
 
             // Verificar si los campos contienen solo letras
             if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {

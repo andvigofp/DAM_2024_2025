@@ -52,7 +52,11 @@ public class VentanaBorrarAutor extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBorrar) {
             // Lógica para borrar el autor
-            app.borrarAutor(nombreAutor); // Método que borra al autor
+            if (app.borrarAutor(nombreAutor)) { // Método que borra al autor
+                JOptionPane.showMessageDialog(this, "Autor borrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo borrar el autor.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             app.cerrarSesion(); // Cerrar sesión de validación
             dispose(); // Cerrar ventana
         } else if (e.getSource() == btnCancelar) {

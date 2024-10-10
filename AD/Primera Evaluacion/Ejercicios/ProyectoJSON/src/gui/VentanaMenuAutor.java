@@ -75,21 +75,14 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnVerDatos) {
-            // Mostrar ventana de ver datos del autor
             app.mostrarVentanaVerDatos(nombreAutor);
         } else if (e.getSource() == btnCambiarTituloLibro) {
-            // Mostrar ventana de cambiar título
             app.mostrarVentanaCambiarTitulo(nombreAutor);
         } else if (e.getSource() == btnBorrarAutor) {
-            // Mostrar ventana de borrar autor
             app.mostrarVentanaBorrarAutor(nombreAutor);
         } else if (e.getSource() == btnCerrarValidacion) {
-            // Cerrar solo la ventana del menú autor
-            dispose(); // Cerrar ventana de menú autor
-
-            // Abrir de nuevo la ventana de inicio de sesión
-            VentanaInicioSesion ventanaValidacion = new VentanaInicioSesion(app);  // Instancia la ventana de validación
-            ventanaValidacion.setVisible(true);  // Mostrar la ventana de validación
+            dispose();
+            new VentanaInicioSesion(app).setVisible(true);
         }
     }
 }

@@ -71,7 +71,7 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnValidar) {
-            String nombreAutor = textoAutor.getText().toLowerCase().trim();
+            String nombreAutor = textoAutor.getText().trim();
             String tituloLibro = textoTitulo.getText().trim();
 
             // Verifica que ambos campos estén completos

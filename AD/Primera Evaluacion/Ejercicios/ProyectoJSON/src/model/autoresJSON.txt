@@ -1,1 +1,6 @@
-[{"libros":["señor anillos"],"editorial":"sega","paginas":"300","nombre":"jose"}]
+[{
+    "editorial": "Nintendo",
+    "paginas": "300",
+    "titulo": "Tortugas",
+    "autor": "María"
+}]
