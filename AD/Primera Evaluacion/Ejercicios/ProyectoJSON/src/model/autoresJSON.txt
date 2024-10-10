@@ -1,6 +1,14 @@
-[{
-    "editorial": "Nintendo",
-    "paginas": "300",
-    "titulo": "Tortugas",
-    "autor": "María"
-}]
+[
+    {
+        "editorial": "Nintendo",
+        "paginas": "300",
+        "titulo": "Tortugas",
+        "autor": "María"
+    },
+    {
+        "editorial": "100",
+        "paginas": "300",
+        "titulo": "Gabiel",
+        "autor": "juan"
+    }
+]

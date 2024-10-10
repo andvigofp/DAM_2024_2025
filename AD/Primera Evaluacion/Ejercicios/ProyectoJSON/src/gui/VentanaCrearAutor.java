@@ -94,6 +94,8 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
         contentPane.add(btnCancelar);
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnCrear) {
@@ -135,5 +137,12 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             VentanaInicioSesion ventanaValidacion = new VentanaInicioSesion(app);
             ventanaValidacion.setVisible(true);
         }
+    }
+    // Método para limpiar los datos que deja por defecto
+    public void limpiarCampos() {
+        textoNombreAutor.setText("");
+        textoTituloLibro.setText("");
+        textoEditorial.setText("");
+        textoPaginas.setText("");
     }
 }

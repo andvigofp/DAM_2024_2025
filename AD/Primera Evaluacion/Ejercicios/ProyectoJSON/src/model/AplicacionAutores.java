@@ -256,12 +256,16 @@ public class AplicacionAutores {
         return false; // Retornar false si no se pudo obtener la lista de autores
     }
 
+
+
     public void mostrarVentanaCrearAutor() {
         // Comprobar si la ventana ya está creada, si no, crear una nueva instancia
         if (ventanaCrearAutor == null) {
             ventanaCrearAutor = new VentanaCrearAutor(this);
         }
 
+        // Limpiar los datos y que no deje por defecto
+        ventanaCrearAutor.limpiarCampos();
         // Hacer visible la ventana
         ventanaCrearAutor.setVisible(true);
     }
