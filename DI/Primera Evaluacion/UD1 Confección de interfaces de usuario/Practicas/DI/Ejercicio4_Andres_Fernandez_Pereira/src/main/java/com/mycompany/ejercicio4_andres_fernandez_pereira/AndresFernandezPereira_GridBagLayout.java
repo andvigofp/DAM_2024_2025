@@ -39,83 +39,81 @@ public class AndresFernandezPereira_GridBagLayout extends JFrame {
     public AndresFernandezPereira_GridBagLayout() {
        // Configurar la ventana principal
         setTitle("Formulario con GridBagLayout");
-        setSize(600, 500);
+        setSize(600, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Crear un panel principal con GridBagLayout
         JPanel mainPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10); // Márgenes entre componentes
+        gbc.insets = new Insets(5, 5, 5, 5); // Ajustar márgenes entre componentes
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Profesión (a la izquierda)
+        // Profesión
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        mainPanel.add(new JLabel("Profesión:"), gbc);
+        gbc.gridwidth= 1;
+        gbc.gridheight=1;
+        mainPanel.add(new JLabel("Profesión"), gbc);
 
         gbc.gridx = 1;
-        JTextField professionField = new JTextField(10);
+        JTextField professionField = new JTextField(10); // Ajustar el tamaño
         mainPanel.add(professionField, gbc);
 
-        // Restablecer insets
-        gbc.insets = new Insets(10, 10, 10, 10);
-        // Edad (a la derecha de Profesión)
+        // Edad
         gbc.gridx = 2;
         gbc.gridy = 0;
-        mainPanel.add(new JLabel("Edad:"), gbc);
+        mainPanel.add(new JLabel("Edad"), gbc);
 
         gbc.gridx = 3;
         String[] ageOptions = {"Entre 18 y 30", "Entre 30 y 60", "Entre 60 y 90"};
         JComboBox<String> ageComboBox = new JComboBox<>(ageOptions);
         mainPanel.add(ageComboBox, gbc);
 
-        // Nº Hermanos (debajo de Profesión)
+        // Nº Hermanos
         gbc.gridx = 0;
         gbc.gridy = 1;
-        mainPanel.add(new JLabel("Nº Hermanos:"), gbc);
+        mainPanel.add(new JLabel("Nº Hermanos"), gbc);
 
         gbc.gridx = 1;
-        JSpinner siblingSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 20, 1));
+        JSpinner siblingSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 20, 0));
         mainPanel.add(siblingSpinner, gbc);
 
-        // Sexo (debajo de Nº Hermanos)
+        // Sexo
         gbc.gridx = 0;
         gbc.gridy = 2;
-        gbc.gridwidth = 1; // Cambiar el ancho a 4 columnas
         JPanel genderPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         genderPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        genderPanel.add(new JLabel("Sexo:"));
+        genderPanel.add(new JLabel("Sexo"));
         JRadioButton maleButton = new JRadioButton("Hombre");
         JRadioButton femaleButton = new JRadioButton("Mujer");
         ButtonGroup genderGroup = new ButtonGroup();
         genderGroup.add(maleButton);
         genderGroup.add(femaleButton);
         
-        // Espaciado ajustado entre botones de sexo
-        maleButton.setMargin(new Insets(0, 0, 0, 10)); // Ajuste del margen a la derecha de "Hombre"
+        maleButton.setMargin(new Insets(0, 20, 0, 10)); 
         genderPanel.add(maleButton);
         genderPanel.add(femaleButton);
         mainPanel.add(genderPanel, gbc);
 
-        // ¿Practica algún deporte? (debajo de Sexo)
+        // ¿Practica algún deporte?
         gbc.gridx = 0;
         gbc.gridy = 3;
-        gbc.gridwidth = 1;
         JCheckBox sportCheckBox = new JCheckBox("¿Practica algún deporte?");
         mainPanel.add(sportCheckBox, gbc);
 
-        // Etiqueta ¿Cuál? (debajo de ¿Practica algún deporte?)
-        gbc.gridx = 1;
+        // ¿Cuál?
+        gbc.gridx = 2;
+        gbc.gridy = 3; // Cambiado a la fila 4 para mantener cerca de la lista
+       
         mainPanel.add(new JLabel("¿Cuál?"), gbc);
 
-        // Lista de deportes (a la derecha de ¿Cuál?)
-        gbc.gridx = 2; // Cambiar a columna 2
-        gbc.gridy = 4; // Cambiar a fila 4
+        // Lista de deportes
+        gbc.gridx = 3; // Asegúrate de que esté en la misma fila
         String[] sports = {"Fútbol", "Tennis", "Tennis de Mesa", "Baloncesto"};
         JList<String> sportList = new JList<>(sports);
         sportList.setVisibleRowCount(3);
         JScrollPane sportScrollPane = new JScrollPane(sportList);
+        sportScrollPane.setPreferredSize(new Dimension(150, 60)); // Ajustar tamaño de la lista
         mainPanel.add(sportScrollPane, gbc);
 
         // Borde debajo de deportes
@@ -133,11 +131,11 @@ public class AndresFernandezPereira_GridBagLayout extends JFrame {
         gbc.gridwidth = 4;
         mainPanel.add(new JLabel("Marque de 1 a 10 su grado de afición a:"), gbc);
 
-        // Compras (debajo de la etiqueta de afición)
+        // Compras
         gbc.gridx = 0;
         gbc.gridy = 7;
         gbc.gridwidth = 1;
-        mainPanel.add(new JLabel("Compras:"), gbc);
+        mainPanel.add(new JLabel("Compras"), gbc);
 
         gbc.gridx = 1;
         JPanel shoppingSliderPanel = new JPanel();
@@ -149,13 +147,10 @@ public class AndresFernandezPereira_GridBagLayout extends JFrame {
         shoppingSlider.setPaintLabels(false);
         shoppingSliderPanel.add(shoppingNumbers);
         shoppingSliderPanel.add(shoppingSlider);
-        gbc.insets = new Insets(10, 10, 10, 10); // Márgen a la derecha
+        gbc.insets = new Insets(10, 10, 10, 10);
         mainPanel.add(shoppingSliderPanel, gbc);
 
-        // Restablecer insets
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Ver la televisión (debajo de Compras)
+        // Ver la televisión
         gbc.gridx = 0;
         gbc.gridy = 8;
         mainPanel.add(new JLabel("Ver la televisión:"), gbc);
@@ -170,16 +165,13 @@ public class AndresFernandezPereira_GridBagLayout extends JFrame {
         tvSlider.setPaintLabels(false);
         tvSliderPanel.add(tvNumbers);
         tvSliderPanel.add(tvSlider);
-        gbc.insets = new Insets(10, 10, 10, 10); // Márgen a la derecha
+        gbc.insets = new Insets(10, 10, 10, 10);
         mainPanel.add(tvSliderPanel, gbc);
 
-        // Restablecer insets
-        gbc.insets = new Insets(10, 10, 10, 10);
-
-        // Ir al cine (debajo de Ver la televisión)
+        // Ir al cine
         gbc.gridx = 0;
         gbc.gridy = 9;
-        mainPanel.add(new JLabel("Ir al cine:"), gbc);
+        mainPanel.add(new JLabel("Ir al cine"), gbc);
 
         gbc.gridx = 1;
         JPanel cinemaSliderPanel = new JPanel();
@@ -191,10 +183,10 @@ public class AndresFernandezPereira_GridBagLayout extends JFrame {
         cinemaSlider.setPaintLabels(false);
         cinemaSliderPanel.add(cinemaNumbers);
         cinemaSliderPanel.add(cinemaSlider);
-        gbc.insets = new Insets(10, 10, 10, 10); // Márgen a la derecha
+        gbc.insets = new Insets(10, 10, 10, 10);
         mainPanel.add(cinemaSliderPanel, gbc);
 
-        // Botones Aceptar y Cancelar a la derecha de los deslizadores
+        // Botones Aceptar y Cancelar
         gbc.gridx = 2;
         gbc.gridy = 7;
         gbc.gridwidth = 2;
