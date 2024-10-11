@@ -90,6 +90,10 @@ public class AplicacionAutores {
         return autores;
     }
 
+    public JSONArray getAutores() {
+        return obtenerAutoresJson(); // Llama al método privado
+    }
+
     // Método que recorre JSONArray de autores para recorrer la posición del autor que desea borrar
     private int obtenerPosicionAutor(String nombreAutor, JSONArray autores) {
         for (int i = 0; i < autores.length(); i++) {
@@ -133,27 +137,34 @@ public class AplicacionAutores {
         JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
 
         if (autores != null) {
-            boolean tituloEncontrado = false; // Inicializa como falso
+            boolean autorEncontrado = false;  // Bandera para saber si se encuentra el autor
+            boolean tituloEncontrado = false; // Bandera para saber si se encuentra el título
 
             // Itera sobre cada autor en el JSON
             for (int i = 0; i < autores.length(); i++) {
                 JSONObject libro = autores.getJSONObject(i);
 
                 // Verifica si el autor coincide
-                if (libro.getString("autor").equalsIgnoreCase(nombreAutor)) {
+                if (libro.getString("autor").equals(nombreAutor)) {
+                    autorEncontrado = true; // Autor encontrado
+
                     // Verifica si el título coincide
-                    if (libro.getString("titulo").equalsIgnoreCase(tituloLibroAutor)) {
+                    if (libro.getString("titulo").equals(tituloLibroAutor)) {
                         tituloEncontrado = true; // Título encontrado
                         break; // Sale del bucle
                     }
                 }
             }
 
-            if (tituloEncontrado) {
-                return true; // Validación exitosa
-            } else {
+            // Respuesta basada en los resultados
+            if (!autorEncontrado) {
+                JOptionPane.showMessageDialog(null, "El autor no existe.", "Error", JOptionPane.INFORMATION_MESSAGE);
+                return false; // Autor no encontrado
+            } else if (!tituloEncontrado) {
                 JOptionPane.showMessageDialog(null, "Combinación de autor y título no existente.", "Error", JOptionPane.INFORMATION_MESSAGE);
-                return false; // No se puede validar
+                return false; // Título no encontrado para el autor
+            } else {
+                return true; // Autor y título encontrados correctamente
             }
         } else {
             JOptionPane.showMessageDialog(null, "No se pudo obtener la lista de autores.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -184,6 +195,12 @@ public class AplicacionAutores {
         // Obtener la lista de autores existente
         JSONArray autores = obtenerAutoresJson();
 
+        // Verificar si el autor ya existe con el mismo nombre y título de libro
+        if (autorYaExiste(nombre, titulo, autores)) {
+            JOptionPane.showMessageDialog(null, "El autor con este libro ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         // Comprobar si la lista de autores se obtuvo correctamente
         if (autores != null) {
             // Agregar el nuevo autor al arreglo de autores
@@ -196,6 +213,21 @@ public class AplicacionAutores {
         } else {
             System.out.println("No se pudo obtener la lista de autores para agregar el nuevo autor.");
         }
+    }
+
+    // Método para comprobar si existe ese libro con ese autor
+    public boolean autorYaExiste(String nombre, String titulo, JSONArray autores) {
+        for (int i = 0; i < autores.length(); i++) {
+            JSONObject autor = autores.getJSONObject(i);
+            String nombreExistente = autor.getString("autor");
+            String tituloExistente = autor.getString("titulo");
+
+            // Comparar nombre y título ignorando mayúsculas/minúsculas
+            if (nombreExistente.equalsIgnoreCase(nombre) && tituloExistente.equalsIgnoreCase(titulo)) {
+                return true;  // El autor con el mismo libro ya existe
+            }
+        }
+        return false;  // El autor no existe
     }
 
     public boolean cambiarTituloLibro(String nombreAutor, String nuevoTitulo) {
@@ -256,7 +288,25 @@ public class AplicacionAutores {
         return false; // Retornar false si no se pudo obtener la lista de autores
     }
 
+    // Método para mostrar el listado de los libros de ese autor
+    public JSONArray obtenerLibrosPorAutor(String nombreAutor) {
+        JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
+        JSONArray librosDelAutor = new JSONArray(); // Crear un nuevo JSONArray para los libros del autor
 
+        if (autores != null) {
+            // Iterar sobre cada autor en el JSON
+            for (int i = 0; i < autores.length(); i++) {
+                JSONObject libro = autores.getJSONObject(i);
+                // Verificar si el autor coincide
+                if (libro.getString("autor").equals(nombreAutor)) {
+                    // Agregar el libro al JSONArray
+                    librosDelAutor.put(libro);
+                }
+            }
+        }
+
+        return librosDelAutor; // Retorna la lista de libros del autor
+    }
 
     public void mostrarVentanaCrearAutor() {
         // Comprobar si la ventana ya está creada, si no, crear una nueva instancia

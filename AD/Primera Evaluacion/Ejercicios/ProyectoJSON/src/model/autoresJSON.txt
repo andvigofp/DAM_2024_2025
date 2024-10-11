@@ -10,5 +10,11 @@
         "paginas": "300",
         "titulo": "Gabiel",
         "autor": "juan"
+    },
+    {
+        "editorial": "Sega",
+        "paginas": "200",
+        "titulo": "Tortugas2",
+        "autor": "María"
     }
 ]

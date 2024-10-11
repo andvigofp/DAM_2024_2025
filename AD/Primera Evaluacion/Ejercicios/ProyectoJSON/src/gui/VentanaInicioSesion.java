@@ -86,18 +86,20 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
                 return;
             }
 
-
             // Lógica de validación delegada a la clase AplicacionAutores
             boolean exito = app.iniciarValidacion(nombreAutor, tituloLibro);
 
             // Si la validación fue exitosa, mostrar el menú del autor
+            // Validar los datos del autor
             if (exito) {
-                app.mostrarMenuAutor(nombreAutor); // Aquí se muestra el menú del autor
-                this.dispose(); // Cierra la ventana de inicio de sesión
-            }
+                // Cerrar la ventana de inicio de sesión
+                dispose();
 
+                // Abrir la ventana del menú del autor
+                app.mostrarMenuAutor(nombreAutor);
+            }
         } else if (e.getSource() == btnCrearNuevoAutorLibro) {
             app.mostrarVentanaCrearAutor();
         }
     }
-}
+    }

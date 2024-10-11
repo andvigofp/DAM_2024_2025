@@ -4,14 +4,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class VentanaMenuAutor extends JFrame implements ActionListener {
 
@@ -22,6 +20,7 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
     private JButton btnCambiarTituloLibro;
     private JButton btnBorrarAutor;
     private JButton btnCerrarValidacion;
+    private JButton btnVerLibros; // Nuevo botón para ver libros
     private AplicacionAutores app;
     private String nombreAutor;
 
@@ -31,7 +30,7 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 
         setTitle("Aplicación autores");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 325, 300);
+        setBounds(100, 100, 325, 350);
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -65,12 +64,21 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
         btnCerrarValidacion.addActionListener(this);
         contentPane.add(btnCerrarValidacion);
 
+        // Botón para ver la lista de libros
+        btnVerLibros = new JButton("Ver libros");
+        btnVerLibros.setBounds(71, 164, 163, 23); // Nueva posición del botón
+        btnVerLibros.addActionListener(this);
+        contentPane.add(btnVerLibros);
+
         textoNombreAutor = new JTextPane();
         textoNombreAutor.setEditable(false);
         textoNombreAutor.setBounds(167, 24, 132, 20);
         textoNombreAutor.setText(nombreAutor);
         contentPane.add(textoNombreAutor);
+
+
     }
+
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -80,9 +88,51 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
             app.mostrarVentanaCambiarTitulo(nombreAutor);
         } else if (e.getSource() == btnBorrarAutor) {
             app.mostrarVentanaBorrarAutor(nombreAutor);
+            dispose();
+            new VentanaInicioSesion(app).setVisible(true);
         } else if (e.getSource() == btnCerrarValidacion) {
             dispose();
             new VentanaInicioSesion(app).setVisible(true);
+        } else if (e.getSource() == btnVerLibros) { // Acción para el nuevo botón
+            mostrarListaLibros();
         }
+    }
+
+    private void mostrarListaLibros() {
+        // Crear una nueva ventana para mostrar la lista de libros
+        JFrame ventanaLibros = new JFrame("Libros de " + nombreAutor);
+        ventanaLibros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        ventanaLibros.setSize(300, 400);
+        ventanaLibros.setLocationRelativeTo(null);
+
+        // Crear un panel para la lista
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        ventanaLibros.setContentPane(panel);
+
+        // Crear un área de texto para mostrar los libros
+        JTextPane textoLibros = new JTextPane();
+        textoLibros.setEditable(false);
+        textoLibros.setBounds(10, 10, 260, 300); // Ajustar el tamaño del área de texto
+
+        // Obtener los libros del autor
+        JSONArray libros = app.obtenerLibrosPorAutor(nombreAutor);
+        StringBuilder listaDeLibros = new StringBuilder();
+
+        if (libros != null && libros.length() > 0) {
+            for (int i = 0; i < libros.length(); i++) {
+                JSONObject libro = libros.getJSONObject(i);
+                String libroTitulo = libro.getString("titulo");
+                listaDeLibros.append(libroTitulo).append("\n"); // Agregar cada título a la lista
+            }
+        } else {
+            listaDeLibros.append("No hay libros registrados para este autor.");
+        }
+
+        textoLibros.setText(listaDeLibros.toString());
+        panel.add(textoLibros);
+
+        // Hacer visible la ventana
+        ventanaLibros.setVisible(true);
     }
 }

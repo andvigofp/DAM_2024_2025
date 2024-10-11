@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import model.AplicacionAutores;
+import org.json.JSONArray;
 
 public class VentanaCrearAutor extends JFrame implements ActionListener {
 
@@ -110,7 +111,6 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
                 return;
             }
 
-
             // Verificar que el campo de páginas contenga solo números
             if (!paginas.matches("\\d+")) {
                 JOptionPane.showMessageDialog(this, "El número de páginas debe ser un valor numérico.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -121,6 +121,15 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             if (nombreAutor.isEmpty() || tituloLibro.isEmpty() || paginas.isEmpty() || editorial.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
+            }
+
+            // Obtener la lista de autores existente
+            JSONArray autores = app.getAutores();
+
+            // Verificar si el autor ya existe con el mismo nombre y título de libro
+            if (app.autorYaExiste(nombreAutor, tituloLibro, autores)) {
+                JOptionPane.showMessageDialog(this, "El autor con este libro ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                return; // No cerrar la ventana, evitar continuar
             }
 
             // Lógica para guardar el nuevo autor y su libro
@@ -138,6 +147,7 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             ventanaValidacion.setVisible(true);
         }
     }
+
     // Método para limpiar los datos que deja por defecto
     public void limpiarCampos() {
         textoNombreAutor.setText("");
