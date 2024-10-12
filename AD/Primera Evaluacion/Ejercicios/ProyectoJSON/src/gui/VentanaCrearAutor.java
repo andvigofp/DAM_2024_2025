@@ -117,6 +117,14 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
                 return;
             }
 
+            // Convertir el texto de páginas a entero para validar que no sea 0
+            int paginasTexto = Integer.parseInt(paginas);
+
+            if (paginasTexto <= 0) {
+                JOptionPane.showMessageDialog(this, "El número de páginas debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             // Verificar que todos los campos estén completos
             if (nombreAutor.isEmpty() || tituloLibro.isEmpty() || paginas.isEmpty() || editorial.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
