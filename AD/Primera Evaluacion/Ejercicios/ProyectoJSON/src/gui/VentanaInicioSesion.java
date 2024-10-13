@@ -102,4 +102,10 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
             app.mostrarVentanaCrearAutor();
         }
     }
+
+    // Método para limpiar los datos que deja por defecto
+    public void limpiarCampos() {
+        textoAutor.setText("");
+        textoTitulo.setText("");
+    }
     }

@@ -137,19 +137,35 @@ public class AplicacionAutores {
         JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
 
         if (autores != null) {
+            System.out.println("Lista de autores cargada: " + autores.toString()); // Depuración
+
             boolean autorEncontrado = false;  // Bandera para saber si se encuentra el autor
             boolean tituloEncontrado = false; // Bandera para saber si se encuentra el título
+
+            // Convertir el nombre del autor y el título del libro ingresados a minúsculas
+            String nombreAutorLower = nombreAutor.toLowerCase();
+            String tituloLibroLower = tituloLibroAutor.toLowerCase();
+
+            System.out.println("Autor ingresado (minúsculas): " + nombreAutorLower); // Depuración
+            System.out.println("Título ingresado (minúsculas): " + tituloLibroLower); // Depuración
 
             // Itera sobre cada autor en el JSON
             for (int i = 0; i < autores.length(); i++) {
                 JSONObject libro = autores.getJSONObject(i);
 
-                // Verifica si el autor coincide
-                if (libro.getString("autor").equals(nombreAutor)) {
+                // Obtener el autor y título en minúsculas desde el JSON
+                String autorJsonLower = libro.getString("autor").toLowerCase();
+                String tituloJsonLower = libro.getString("titulo").toLowerCase();
+
+                System.out.println("Comparando con autor en JSON: " + autorJsonLower); // Depuración
+                System.out.println("Comparando con título en JSON: " + tituloJsonLower); // Depuración
+
+                // Verifica si el autor coincide, comparando insensible a mayúsculas
+                if (autorJsonLower.equals(nombreAutorLower)) {
                     autorEncontrado = true; // Autor encontrado
 
-                    // Verifica si el título coincide
-                    if (libro.getString("titulo").equals(tituloLibroAutor)) {
+                    // Verifica si el título coincide, comparando insensible a mayúsculas
+                    if (tituloJsonLower.equals(tituloLibroLower)) {
                         tituloEncontrado = true; // Título encontrado
                         break; // Sale del bucle
                     }
@@ -327,6 +343,9 @@ public class AplicacionAutores {
             ventanaInicioSesion = new VentanaInicioSesion(this);
         }
 
+        // Limpiar los datos y que no deje por defecto
+        ventanaInicioSesion.limpiarCampos();
+        
         // Hacer visible la ventana
         ventanaInicioSesion.setVisible(true);
     }

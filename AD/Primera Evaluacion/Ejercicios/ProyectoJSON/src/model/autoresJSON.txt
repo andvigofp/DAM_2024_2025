@@ -1,6 +1,14 @@
-[{
-    "editorial": "100",
-    "paginas": "300",
-    "titulo": "Gabiel",
-    "autor": "juan"
-}]
+[
+    {
+        "editorial": "100",
+        "paginas": "300",
+        "titulo": "Gabiel",
+        "autor": "juan"
+    },
+    {
+        "editorial": "Sega",
+        "paginas": "1000",
+        "titulo": "Enterrador",
+        "autor": "Maria"
+    }
+]
