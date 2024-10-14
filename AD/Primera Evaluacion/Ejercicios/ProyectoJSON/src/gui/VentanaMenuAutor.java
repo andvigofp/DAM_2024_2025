@@ -3,6 +3,7 @@ package gui;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -99,6 +100,9 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
     }
 
     private void mostrarListaLibros() {
+        // Forzar la recarga de los datos del archivo JSON
+        app.actualizarDatosAutores();  // Este método debería leer el archivo JSON y cargar los datos en memoria
+
         // Crear una nueva ventana para mostrar la lista de libros
         JFrame ventanaLibros = new JFrame("Libros de " + nombreAutor);
         ventanaLibros.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -115,20 +119,19 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
         textoLibros.setEditable(false);
         textoLibros.setBounds(10, 10, 260, 300); // Ajustar el tamaño del área de texto
 
-        // Obtener los libros del autor
-        JSONArray libros = app.obtenerLibrosPorAutor(nombreAutor);
+        // Obtener los libros del autor como una lista de Strings
+        List<String> libros = app.obtenerLibrosPorAutor(nombreAutor);
         StringBuilder listaDeLibros = new StringBuilder();
 
-        if (libros != null && libros.length() > 0) {
-            for (int i = 0; i < libros.length(); i++) {
-                JSONObject libro = libros.getJSONObject(i);
-                String libroTitulo = libro.getString("titulo");
+        if (libros != null && !libros.isEmpty()) {
+            for (String libroTitulo : libros) {
                 listaDeLibros.append(libroTitulo).append("\n"); // Agregar cada título a la lista
             }
         } else {
             listaDeLibros.append("No hay libros registrados para este autor.");
         }
 
+        // Mostrar la lista de libros en el JTextPane
         textoLibros.setText(listaDeLibros.toString());
         panel.add(textoLibros);
 

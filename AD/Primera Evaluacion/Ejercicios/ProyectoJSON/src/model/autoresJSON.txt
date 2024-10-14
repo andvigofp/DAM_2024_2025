@@ -14,7 +14,7 @@
     {
         "editorial": "ABC",
         "paginas": "200",
-        "titulo": "Señor Añillos",
+        "titulo": "El Hobbit",
         "autor": "Maria"
     }
 ]

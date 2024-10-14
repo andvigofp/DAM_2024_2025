@@ -16,6 +16,8 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
     private JTextField textoTitulo;
     private JButton btnValidar;
     private JButton btnCrearNuevoAutorLibro;
+
+    private JButton btnRestablecer; // Botón para restablecer los campos
     private AplicacionAutores app;
 
     public VentanaInicioSesion(AplicacionAutores app) {
@@ -67,7 +69,19 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
         btnCrearNuevoAutorLibro.setBounds(10, 303, 149, 23);
         btnCrearNuevoAutorLibro.addActionListener(this);
         contentPane.add(btnCrearNuevoAutorLibro);
+
+        // Agregar el botón de restablecer
+        btnRestablecer = new JButton("Restablecer");
+        btnRestablecer.setBounds(176 + 118 + 10, 303, 118, 23); // Coloca el botón a la derecha de los demás
+        btnRestablecer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                limpiarCampos(); // Limpiar los campos al presionar el botón
+            }
+        });
+        contentPane.add(btnRestablecer);
     }
+
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnValidar) {
@@ -81,8 +95,8 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
             }
 
             // Verifica que el nombreAutor contenga solo letras
-            if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
-                JOptionPane.showMessageDialog(this, "El nombre del autor solo debe contener letras.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+") || (!nombreAutor.matches("[a-zA-Z\\s]+"))) {
+                JOptionPane.showMessageDialog(this, "El nombre del autor solo debe contener letras y sin tilde.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

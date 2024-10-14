@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AplicacionAutores {
 
@@ -123,6 +125,21 @@ public class AplicacionAutores {
         }
         System.out.println("Autor no encontrado: " + nombreAutor); // Mensaje de depuración
         return null; // Retorna null si no se encuentra el autor
+    }
+
+    // Método para actualizar la lista de autores en el archivo JSON
+    public void actualizarDatosAutores() {
+        // Obtener la lista de autores actual desde el archivo
+        JSONArray autoresActualizados = obtenerAutoresJson();
+
+        // Asegurarse de que el JSONArray no sea nulo antes de proceder
+        if (autoresActualizados != null) {
+            // Guardar la lista actualizada en el archivo
+            guardarFicheroJson(autoresActualizados);
+            System.out.println("Datos de autores actualizados exitosamente.");
+        } else {
+            System.out.println("No se pudo obtener la lista de autores.");
+        }
     }
 
 
@@ -316,23 +333,29 @@ public class AplicacionAutores {
     }
 
     // Método para mostrar el listado de los libros de ese autor
-    public JSONArray obtenerLibrosPorAutor(String nombreAutor) {
-        JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
-        JSONArray librosDelAutor = new JSONArray(); // Crear un nuevo JSONArray para los libros del autor
+    public List<String> obtenerLibrosPorAutor(String nombreAutor) {
+        List<String> titulos = new ArrayList<>();
 
-        if (autores != null) {
-            // Iterar sobre cada autor en el JSON
-            for (int i = 0; i < autores.length(); i++) {
-                JSONObject libro = autores.getJSONObject(i);
-                // Verificar si el autor coincide
-                if (libro.getString("autor").equals(nombreAutor)) {
-                    // Agregar el libro al JSONArray
-                    librosDelAutor.put(libro);
+        JSONArray libros = obtenerAutoresJson();
+
+        System.out.println("Libros cargados: " + libros); // Agregar esta línea para ver los libros cargados
+
+        if (libros != null) {
+            for (int i = 0; i < libros.length(); i++) {
+                JSONObject libro = libros.getJSONObject(i);
+                String autor = libro.getString("autor");
+                String titulo = libro.getString("titulo");
+
+                System.out.println("Autor: " + autor + ", Título: " + titulo); // Verificar cada autor y título
+
+                if (autor.equalsIgnoreCase(nombreAutor)) {
+                    titulos.add(titulo);
                 }
             }
         }
 
-        return librosDelAutor; // Retorna la lista de libros del autor
+        System.out.println("Títulos encontrados para " + nombreAutor + ": " + titulos); // Verificar la lista de títulos
+        return titulos;
     }
 
     public void mostrarVentanaCrearAutor() {
