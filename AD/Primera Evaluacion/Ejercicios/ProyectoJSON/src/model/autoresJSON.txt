@@ -2,13 +2,19 @@
     {
         "editorial": "100",
         "paginas": "300",
-        "titulo": "Gabiel",
+        "titulo": "Enterrador",
         "autor": "juan"
     },
     {
         "editorial": "Sega",
         "paginas": "1000",
-        "titulo": "Enterrador",
+        "titulo": "Enterrador2",
+        "autor": "juan"
+    },
+    {
+        "editorial": "ABC",
+        "paginas": "200",
+        "titulo": "Señor Añillos",
         "autor": "Maria"
     }
 ]

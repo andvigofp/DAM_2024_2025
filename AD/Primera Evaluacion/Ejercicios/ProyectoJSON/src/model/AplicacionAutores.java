@@ -254,14 +254,20 @@ public class AplicacionAutores {
             // Obtener la posición del autor buscando por nombre del autor (y no por el título)
             int posicion = obtenerPosicionAutor(nombreAutor, autores);
             if (posicion != -1) {
-                // Obtener el objeto autor
+                // Obtener el objeto del autor
                 JSONObject autor = autores.getJSONObject(posicion);
 
-                // Cambiar el título (es un String)
+                // Obtener el título antiguo antes de cambiarlo
+                String tituloAntiguo = autor.getString("titulo");
+
+                // Cambiar el título
                 autor.put("titulo", nuevoTitulo);
 
                 // Guardar el JSONArray actualizado en el archivo
                 guardarFicheroJson(autores);
+
+                // Mostrar mensaje indicando el cambio de título
+                JOptionPane.showMessageDialog(null, "El libro '" + tituloAntiguo + "' ha sido reemplazado por '" + nuevoTitulo + "'.", "Cambio de título", JOptionPane.INFORMATION_MESSAGE);
 
                 System.out.println("Título cambiado correctamente.");
                 return true;
@@ -279,18 +285,23 @@ public class AplicacionAutores {
         JSONArray autores = obtenerAutoresJson(); // Obtener la lista de autores
         if (autores != null) {
             boolean autorEliminado = false; // Variable para verificar si se eliminó al menos un autor
+            StringBuilder librosEliminados = new StringBuilder(); // Para almacenar los títulos de los libros que se eliminan
 
             // Usamos un bucle para recorrer el array y eliminar todos los libros del autor
             for (int i = autores.length() - 1; i >= 0; i--) { // Iterar desde el final hacia el inicio
                 JSONObject libro = autores.getJSONObject(i);
                 // Comprobar si el autor coincide
                 if (libro.getString("autor").equalsIgnoreCase(nombreAutor)) {
+                    librosEliminados.append(libro.getString("titulo")).append("\n"); // Almacenar el título del libro
                     autores.remove(i); // Borrar el objeto del autor
                     autorEliminado = true; // Indicar que se ha eliminado un libro del autor
                 }
             }
 
             if (autorEliminado) {
+                // Mostrar un mensaje con los libros eliminados
+                JOptionPane.showMessageDialog(null, "El autor " + nombreAutor + " ha sido eliminado junto con los siguientes libros:\n" + librosEliminados.toString(), "Autor eliminado", JOptionPane.INFORMATION_MESSAGE);
+
                 guardarFicheroJson(autores); // Guardar la lista actualizada en el fichero
                 return true; // Retornar true si se eliminó al menos un autor
             } else {
@@ -377,8 +388,6 @@ public class AplicacionAutores {
 
         // Comprobar si el autor fue encontrado
         if (autorJson != null) {
-            // Obtener el título actual (como un String, no JSONArray)
-            String tituloActual = autorJson.getString("titulo"); // Es un String, no un JSONArray
 
             // Crear la ventana de cambiar título y pasar el nombre del autor (no el título)
             VentanaCambiarTitulo ventanaCambiarTitulo = new VentanaCambiarTitulo(this, nombreAutor); // Pasar nombreAutor

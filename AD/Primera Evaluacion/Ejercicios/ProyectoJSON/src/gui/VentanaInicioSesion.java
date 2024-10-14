@@ -100,6 +100,7 @@ public class VentanaInicioSesion extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == btnCrearNuevoAutorLibro) {
             app.mostrarVentanaCrearAutor();
+            dispose();
         }
     }
 
