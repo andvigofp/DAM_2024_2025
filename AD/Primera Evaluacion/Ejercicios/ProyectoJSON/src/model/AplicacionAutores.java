@@ -217,6 +217,21 @@ public class AplicacionAutores {
         System.out.println("Sesión cerrada correctamente.");
     }
 
+    // Método para comprobar si existe ese libro con ese autor
+    public boolean autorYaExiste(String nombre, String titulo, JSONArray autores) {
+        for (int i = 0; i < autores.length(); i++) {
+            JSONObject autor = autores.getJSONObject(i);
+            String nombreExistente = autor.getString("autor");
+            String tituloExistente = autor.getString("titulo");
+
+            // Comparar nombre y título ignorando mayúsculas/minúsculas
+            if (nombreExistente.equalsIgnoreCase(nombre) && tituloExistente.equalsIgnoreCase(titulo)) {
+                return true;  // El autor con el mismo libro ya existe
+            }
+        }
+        return false;  // El autor no existe
+    }
+
     public void crearAutor(String nombre, String titulo, String paginas, String editorial) {
         // Crear un nuevo objeto JSON para el autor
         JSONObject nuevoAutor = new JSONObject();
@@ -248,27 +263,28 @@ public class AplicacionAutores {
         }
     }
 
-    // Método para comprobar si existe ese libro con ese autor
-    public boolean autorYaExiste(String nombre, String titulo, JSONArray autores) {
-        for (int i = 0; i < autores.length(); i++) {
-            JSONObject autor = autores.getJSONObject(i);
-            String nombreExistente = autor.getString("autor");
-            String tituloExistente = autor.getString("titulo");
 
-            // Comparar nombre y título ignorando mayúsculas/minúsculas
-            if (nombreExistente.equalsIgnoreCase(nombre) && tituloExistente.equalsIgnoreCase(titulo)) {
-                return true;  // El autor con el mismo libro ya existe
-            }
-        }
-        return false;  // El autor no existe
-    }
 
     public boolean cambiarTituloLibro(String nombreAutor, String nuevoTitulo) {
         // Obtener la lista de autores
         JSONArray autores = obtenerAutoresJson();
 
         if (autores != null) {
-            // Obtener la posición del autor buscando por nombre del autor (y no por el título)
+            // Verificar si el nuevo título ya existe en la lista de autores
+            for (int i = 0; i < autores.length(); i++) {
+                JSONObject autorExistente = autores.getJSONObject(i);
+                String nombreExiste = autorExistente.getString("autor");
+                String tituloExistente = autorExistente.getString("titulo");
+
+
+                // Si el nuevo título ya existe, mostrar mensaje de advertencia y cancelar el cambio
+                if (nombreExiste.equalsIgnoreCase(nombreAutor) && tituloExistente.equalsIgnoreCase(nuevoTitulo)) {
+                    JOptionPane.showMessageDialog(null, "El título '" + nuevoTitulo + "' ya existe. No se puede cambiar el título a uno que ya existe.", "Error de título duplicado", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+
+            // Obtener la posición del autor buscando por nombre del autor
             int posicion = obtenerPosicionAutor(nombreAutor, autores);
             if (posicion != -1) {
                 // Obtener el objeto del autor

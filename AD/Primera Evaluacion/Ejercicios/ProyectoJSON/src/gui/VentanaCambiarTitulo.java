@@ -67,7 +67,7 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
                     dispose(); // Cerrar solo la ventana de cambiar título
 
                     app.cerrarSesion();  // Cierra todas las ventanas abiertas
-                    app.mostrarVentanaInicioSesion();  // Muestra la ventana de inicio de sesión
+
 
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo cambiar el título.", "Error", JOptionPane.ERROR_MESSAGE);

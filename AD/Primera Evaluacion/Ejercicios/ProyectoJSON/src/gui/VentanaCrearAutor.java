@@ -106,8 +106,14 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             String editorial = textoEditorial.getText().trim();
 
             // Verificar si los campos contienen solo letras
-            if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+") || (!nombreAutor.matches("[a-zA-Z\\s]+"))) {
-                JOptionPane.showMessageDialog(this, "El nombre del autor solo debe contener letras y sin tilde.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
+                JOptionPane.showMessageDialog(this, "El nombre del autor solo debe contener letras .", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Verifica que el nombreAutor no contenga tildes
+            if  (!nombreAutor.matches("[a-zA-Z\\s]+")){
+                JOptionPane.showMessageDialog(this, "El nombre del autor no puede contener tilde.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
