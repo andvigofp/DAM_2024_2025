@@ -57,8 +57,8 @@ public class VentanaBorrarAutor extends JFrame implements ActionListener {
            app.mostrarVentanaInicioSesion();
         } else if (e.getSource() == btnCancelar) {
             // Cerrar la ventana de borrado y dejar intacta VentanaMenuAutor
+            app.mostrarMenuAutor(nombreAutor);
             dispose();
-            app.mostrarVentanaInicioSesion();
         }
     }
 

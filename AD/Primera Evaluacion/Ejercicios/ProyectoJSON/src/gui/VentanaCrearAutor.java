@@ -152,7 +152,6 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             }
             // Lógica para guardar el nuevo autor y su libro
             app.crearAutor(nombreAutor, tituloLibro, paginas, editorial);
-            JOptionPane.showMessageDialog(this, "Autor creado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
             dispose(); // Cierra la ventana de crear autor
 
             // Asegúrate de que VentanaInicioSesion se muestre

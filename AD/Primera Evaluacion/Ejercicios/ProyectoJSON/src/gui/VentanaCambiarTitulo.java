@@ -56,26 +56,18 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnCambiarTitulo) {
-            String nuevoTitulo = textoNuevoTitulo.getText().trim();
-            if (!nuevoTitulo.isEmpty()) {
-                // Lógica para cambiar el título en la aplicación
-                boolean exito = app.cambiarTituloLibro(nombreAutor, nuevoTitulo); // Cambia el título en la aplicación
+        if (e.getSource()==btnCambiarTitulo){
+            String nuevotitulo = textoNuevoTitulo.getText();
 
-                if (exito) {
-                    JOptionPane.showMessageDialog(this, "El título se ha cambiado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    this.dispose(); // Cerrar solo la ventana de cambiar título
-
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo cambiar el título.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                // Mostrar un mensaje de error si el nuevo título está vacío
-                JOptionPane.showMessageDialog(this, "El nuevo título no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            if (!nuevotitulo.isEmpty()){
+                app.cambiarTituloLibro(nombreAutor,nuevotitulo);
+                this.dispose();
+            }else {
+                JOptionPane.showMessageDialog(this,"El titulo no puede estar vacio","ERROR",JOptionPane.ERROR_MESSAGE);
             }
-        } else if (e.getSource() == btnCancelar) {
-            // Cerrar la ventana y volver al menú del autor
+        } else if (e.getSource()==btnCancelar) {
             this.dispose();
         }
     }
+
 }

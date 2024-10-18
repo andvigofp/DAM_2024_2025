@@ -1,26 +1,26 @@
 [
     {
-        "editorial": "Warner Bros",
-        "paginas": "1000",
+        "editorial": "Disney",
+        "paginas": "50",
         "titulo": "El Hobbit",
+        "autor": "Pedro"
+    },
+    {
+        "editorial": "ABC",
+        "paginas": "190",
+        "titulo": "La Purga",
         "autor": "Maria"
     },
     {
-        "editorial": "ABC",
-        "paginas": "1000",
-        "titulo": "Harry Potter",
-        "autor": "Juan"
+        "editorial": "Plaza James",
+        "paginas": "500",
+        "titulo": "Resplandor",
+        "autor": "Sofia"
     },
     {
-        "editorial": "ABC",
-        "paginas": "1000",
-        "titulo": "EL Emperador Oscuro",
-        "autor": "Juan"
-    },
-    {
-        "editorial": "Disney",
-        "paginas": "50",
-        "titulo": "Los Enanitos",
-        "autor": "Pedro"
+        "editorial": "Pameta Agonistini",
+        "paginas": "1500",
+        "titulo": "La castilla",
+        "autor": "Berto"
     }
 ]
