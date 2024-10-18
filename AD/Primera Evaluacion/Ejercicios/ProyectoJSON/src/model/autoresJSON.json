@@ -1,0 +1,26 @@
+[
+    {
+        "editorial": "Warner Bros",
+        "paginas": "1000",
+        "titulo": "El Hobbit",
+        "autor": "Maria"
+    },
+    {
+        "editorial": "ABC",
+        "paginas": "1000",
+        "titulo": "Harry Potter",
+        "autor": "Juan"
+    },
+    {
+        "editorial": "ABC",
+        "paginas": "1000",
+        "titulo": "EL Emperador Oscuro",
+        "autor": "Juan"
+    },
+    {
+        "editorial": "Disney",
+        "paginas": "50",
+        "titulo": "Los Enanitos",
+        "autor": "Pedro"
+    }
+]

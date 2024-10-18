@@ -80,7 +80,6 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
 
     }
 
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnVerDatos) {
@@ -89,11 +88,11 @@ public class VentanaMenuAutor extends JFrame implements ActionListener {
             app.mostrarVentanaCambiarTitulo(nombreAutor);
         } else if (e.getSource() == btnBorrarAutor) {
             app.mostrarVentanaBorrarAutor(nombreAutor);
-            dispose();
-            new VentanaInicioSesion(app).setVisible(true);
+            this.dispose();
         } else if (e.getSource() == btnCerrarValidacion) {
+            app.cerrarSesion();
             dispose();
-            new VentanaInicioSesion(app).setVisible(true);
+            app.mostrarVentanaInicioSesion();
         } else if (e.getSource() == btnVerLibros) { // Acción para el nuevo botón
             mostrarListaLibros();
         }

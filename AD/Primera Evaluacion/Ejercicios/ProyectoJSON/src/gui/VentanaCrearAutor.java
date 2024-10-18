@@ -105,6 +105,12 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
             String paginas = textoPaginas.getText().trim();
             String editorial = textoEditorial.getText().trim();
 
+            // Verificar que todos los campos estén completos
+            if (nombreAutor.isEmpty() || tituloLibro.isEmpty() || paginas.isEmpty() || editorial.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             // Verificar si los campos contienen solo letras
             if (!nombreAutor.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+")) {
                 JOptionPane.showMessageDialog(this, "El nombre del autor solo debe contener letras .", "Error", JOptionPane.ERROR_MESSAGE);
@@ -123,17 +129,16 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
                 return;
             }
 
-            // Convertir el texto de páginas a entero para validar que no sea 0
-            int paginasTexto = Integer.parseInt(paginas);
+            try {
+                // Convertir el texto de páginas a entero para validar que no sea 0
+                int paginasTexto = Integer.parseInt(paginas);
 
-            if (paginasTexto <= 0) {
-                JOptionPane.showMessageDialog(this, "El número de páginas debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            // Verificar que todos los campos estén completos
-            if (nombreAutor.isEmpty() || tituloLibro.isEmpty() || paginas.isEmpty() || editorial.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
+                if (paginasTexto <= 0) {
+                    JOptionPane.showMessageDialog(this, "El número de páginas debe ser mayor que cero.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "El número de páginas debe ser un valor numérico", "ERROR", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -145,20 +150,19 @@ public class VentanaCrearAutor extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(this, "El autor con este libro ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
                 return; // No cerrar la ventana, evitar continuar
             }
-
             // Lógica para guardar el nuevo autor y su libro
             app.crearAutor(nombreAutor, tituloLibro, paginas, editorial);
             JOptionPane.showMessageDialog(this, "Autor creado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
-            // Muestra el menú del autor
-            app.mostrarMenuAutor(nombreAutor);
             dispose(); // Cierra la ventana de crear autor
+
+            // Asegúrate de que VentanaInicioSesion se muestre
+           app.mostrarVentanaInicioSesion();
 
         } else if (e.getSource() == btnCancelar) {
             // Cierra la ventana de crear autor y muestra la ventana de validación
             dispose();
-            VentanaInicioSesion ventanaValidacion = new VentanaInicioSesion(app);
-            ventanaValidacion.setVisible(true);
+            app.mostrarVentanaInicioSesion();
+
         }
     }
 

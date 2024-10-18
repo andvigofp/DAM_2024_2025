@@ -64,10 +64,7 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
 
                 if (exito) {
                     JOptionPane.showMessageDialog(this, "El título se ha cambiado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                    dispose(); // Cerrar solo la ventana de cambiar título
-
-                    app.cerrarSesion();  // Cierra todas las ventanas abiertas
-
+                    this.dispose(); // Cerrar solo la ventana de cambiar título
 
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo cambiar el título.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -78,7 +75,7 @@ public class VentanaCambiarTitulo extends JFrame implements ActionListener {
             }
         } else if (e.getSource() == btnCancelar) {
             // Cerrar la ventana y volver al menú del autor
-            dispose();
+            this.dispose();
         }
     }
 }

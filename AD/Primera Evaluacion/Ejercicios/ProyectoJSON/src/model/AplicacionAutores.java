@@ -23,7 +23,7 @@ import java.util.List;
 
 public class AplicacionAutores {
 
-    private final String RUTA_FICHERO = "./src/model/autoresJSON.txt";
+    private final String RUTA_FICHERO = "./src/model/autoresJSON.json";
     private VentanaInicioSesion ventanaInicioSesion;
     private VentanaCrearAutor ventanaCrearAutor;
     private VentanaMenuAutor ventanaMenuAutor;
@@ -214,7 +214,7 @@ public class AplicacionAutores {
         if (ventanaCrearAutor != null) ventanaCrearAutor.dispose();
         if (ventanaInicioSesion != null) ventanaInicioSesion.dispose();
 
-        System.out.println("Sesión cerrada correctamente.");
+        JOptionPane.showMessageDialog(null, "Cerro Sesion Correctamente.", "Cerrar Sesion", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // Método para comprobar si existe ese libro con ese autor
@@ -246,7 +246,7 @@ public class AplicacionAutores {
         // Verificar si el autor ya existe con el mismo nombre y título de libro
         if (autorYaExiste(nombre, titulo, autores)) {
             JOptionPane.showMessageDialog(null, "El autor con este libro ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return; // Si el autor ya existe, no se agrega
         }
 
         // Comprobar si la lista de autores se obtuvo correctamente
@@ -262,7 +262,6 @@ public class AplicacionAutores {
             System.out.println("No se pudo obtener la lista de autores para agregar el nuevo autor.");
         }
     }
-
 
 
     public boolean cambiarTituloLibro(String nombreAutor, String nuevoTitulo) {
@@ -395,7 +394,7 @@ public class AplicacionAutores {
 
         // Limpiar los datos y que no deje por defecto
         ventanaInicioSesion.limpiarCampos();
-        
+
         // Hacer visible la ventana
         ventanaInicioSesion.setVisible(true);
     }
@@ -437,29 +436,15 @@ public class AplicacionAutores {
         }
     }
 
-    public void mostrarVentanaBorrarAutor(String nombreAutor){
+    public void mostrarVentanaBorrarAutor(String nombreAutor) {
         // Obtener los datos del autor desde el JSON
         JSONObject autorJson = obtenerAutoresJson(nombreAutor);
 
         // Comprobar si el autor fue encontrado
         if (autorJson != null) {
-            // Mostrar una ventana de confirmación para borrar el autor
-            int opcion = JOptionPane.showConfirmDialog(null,
-                    "¿Está seguro de que desea borrar al autor " + nombreAutor + "?",
-                    "Confirmar Borrado",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-
-            // Si el usuario confirma la acción
-            if (opcion == JOptionPane.YES_OPTION) {
-                // Llamar al método para borrar el autor
-                boolean eliminado = borrarAutor(nombreAutor);
-                if (eliminado) {
-                    JOptionPane.showMessageDialog(null, "Autor borrado con éxito.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo borrar al autor.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
+            // Crear una nueva instancia de VentanaBorrarAutor
+            VentanaBorrarAutor ventanaBorrarAutor = new VentanaBorrarAutor(this, nombreAutor);
+            ventanaBorrarAutor.setVisible(true); // Mostrar la ventana de borrar autor
         } else {
             // Mensaje informativo si no se encuentra al autor
             JOptionPane.showMessageDialog(null, "Autor no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);

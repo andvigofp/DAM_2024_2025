@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Font;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +18,7 @@ public class VentanaBorrarAutor extends JFrame implements ActionListener {
     private AplicacionAutores app;
     private String nombreAutor;
 
-    public VentanaBorrarAutor(AplicacionAutores app, String nombreAutor) {
+    public VentanaBorrarAutor( AplicacionAutores app, String nombreAutor) {
         this.app = app;
         this.nombreAutor = nombreAutor;
         setTitle("Aplicación autores");
@@ -48,20 +48,18 @@ public class VentanaBorrarAutor extends JFrame implements ActionListener {
         contentPane.add(btnCancelar);
     }
 
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnBorrar) {
-            // Lógica para borrar el autor
-            if (app.borrarAutor(nombreAutor)) { // Método que borra al autor
-                JOptionPane.showMessageDialog(this, "Autor borrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo borrar el autor.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-            app.cerrarSesion(); // Cerrar sesión de validación
-            dispose(); // Cerrar ventana
+           app.borrarAutor(nombreAutor);
+           dispose();
+           app.mostrarVentanaInicioSesion();
         } else if (e.getSource() == btnCancelar) {
-            // Cerrar la ventana y volver al menú del autor
+            // Cerrar la ventana de borrado y dejar intacta VentanaMenuAutor
             dispose();
+            app.mostrarVentanaInicioSesion();
         }
     }
+
 }
