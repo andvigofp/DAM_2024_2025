@@ -14,7 +14,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -26,8 +25,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tarjetapeliculasseries.ui.theme.TarjetaPeliculasSeriesTheme
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.style.TextAlign
-
-
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
@@ -70,12 +70,27 @@ fun LoadingScreen(onTimeout: () -> Unit) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.fillMaxSize()
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.logo_peliculas_series), // Asegúrate que el nombre del recurso sea correcto
-            contentDescription = "Logo Películas y Series",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.logo_peliculas_series), // Asegúrate que el nombre del recurso sea correcto
+                contentDescription = "Logo Películas y Series",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(100.dp) // Cambia el tamaño según sea necesario
+                    .clip(shape = CircleShape) // Recortar en forma redonda
+            )
+            Spacer(modifier = Modifier.height(16.dp)) // Espacio entre el logo y el texto
+            Text(
+                text = "Películas y Series",
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 28.sp), // Texto grande
+                color = Color(0xFF0000FF), // Color azul
+                textAlign = TextAlign.Center
+            )
+        }
     }
 
     // Simula la pantalla de carga y navega tras 2 segundos
@@ -93,6 +108,17 @@ fun MainScreen(onNavigateToPeliculas: () -> Unit, onNavigateToSeries: () -> Unit
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        Image(
+            painter = painterResource(id = R.drawable.ic_peliculas_series), // Asegúrate que el nombre del recurso sea correcto
+            contentDescription = "Logo Películas y Series",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .size(300.dp) // Cambia el tamaño según sea necesario
+                .clip(shape = CircleShape) // Recortar en forma redonda
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 16.dp)
+        )
+
         Button(onClick = onNavigateToPeliculas) {
             Text(text = "Ver Películas")
         }
@@ -127,28 +153,22 @@ fun MoviesScreen(onNavigateBack: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+
             Text(
                 text = "Películas",
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 24.sp), // Texto más grande
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 30.sp), // Texto más grande
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp), // Espaciado
                 textAlign = TextAlign.Center // Centrar texto
             )
-            Image(
-                painter = painterResource(id = R.drawable.logo_peliculas),
-                contentDescription = "Logo Películas",
-                modifier = Modifier
-                    .size(100.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 16.dp)
-            )
+
             val movies = listOf(
-                MediaItem("Inception", "Netflix"),
-                MediaItem("The Lord of the Rings: The Fellowship of the Ring", "Amazon Prime"),
-                MediaItem("Avatar: The Way of Water", "Disney Plus"),
-                MediaItem("Joker", "Max"),
-                MediaItem("Spider-Man: No Way Home", "Disney Plus")
+                MediaItem("El Irlandés", "Netflix"),
+                MediaItem("El Hombre de tu Vida", "Amazon Prime"),
+                MediaItem("Matrix Resurrecciones", "Max"),
+                MediaItem("Avatar: El Camino del Agua", "Disney Plus"),
+                MediaItem("Roma", "Netflix")
             )
 
             LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -184,28 +204,23 @@ fun SeriesScreen(onNavigateBack: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
+
             Text(
                 text = "Series",
-                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 24.sp), // Texto más grande
+                style = MaterialTheme.typography.headlineLarge.copy(fontSize = 30.sp), // Texto más grande
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp), // Espaciado
                 textAlign = TextAlign.Center // Centrar texto
             )
-            Image(
-                painter = painterResource(id = R.drawable.logo_series),
-                contentDescription = "Logo Series",
-                modifier = Modifier
-                    .size(100.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .padding(vertical = 16.dp)
-            )
+
             val series = listOf(
+                MediaItem("La Casa de Papel", "Netflix"),
+                MediaItem("La Rueda del Tiempo", "Amazon Prime"),
+                MediaItem("The Sopranos", "Max"),
+                MediaItem("Loki", "Disney Plus"),
                 MediaItem("Stranger Things", "Netflix"),
-                MediaItem("The Boys", "Amazon Prime"),
-                MediaItem("House of the Dragon", "Max"),
-                MediaItem("The Mandalorian", "Disney Plus"),
-                MediaItem("Breaking Bad", "Netflix")
+                MediaItem("Black List", "Netflix")
             )
 
             LazyColumn(modifier = Modifier.padding(16.dp)) {
@@ -227,8 +242,14 @@ data class MediaItem(
 @Composable
 fun MovieItem(movie: MediaItem) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text = movie.title, style = MaterialTheme.typography.titleMedium)
-        Text(text = "Plataforma: ${movie.platform}", style = MaterialTheme.typography.bodySmall)
+        Text(
+            text = movie.title,
+            style = MaterialTheme.typography.titleMedium.copy(color = Color.Black) // Cambiar color a negro
+        )
+        Text(
+            text = "Plataforma: ${movie.platform}",
+            style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray) // Cambiar color a gris
+        )
         Divider(color = Color.Gray, thickness = 1.dp)
     }
 }
@@ -237,8 +258,14 @@ fun MovieItem(movie: MediaItem) {
 @Composable
 fun SeriesItem(series: MediaItem) {
     Column(modifier = Modifier.padding(vertical = 8.dp)) {
-        Text(text = series.title, style = MaterialTheme.typography.titleMedium)
-        Text(text = "Plataforma: ${series.platform}", style = MaterialTheme.typography.bodySmall)
+        Text(
+            text = series.title,
+            style = MaterialTheme.typography.titleMedium.copy(color = Color.Black) // Cambiar color a negro
+        )
+        Text(
+            text = "Plataforma: ${series.platform}",
+            style = MaterialTheme.typography.bodySmall.copy(color = Color.Gray) // Cambiar color a gris
+        )
         Divider(color = Color.Gray, thickness = 1.dp)
     }
 }
@@ -267,5 +294,14 @@ fun MoviesScreenPreview() {
 fun SeriesScreenPreview() {
     TarjetaPeliculasSeriesTheme {
         SeriesScreen(onNavigateBack = {})
+    }
+}
+
+// Previsualización de la pantalla principal
+@Preview(showBackground = true)
+@Composable
+fun MainScreenPreview() {
+    TarjetaPeliculasSeriesTheme {
+        MainScreen(onNavigateToPeliculas = {}, onNavigateToSeries = {})
     }
 }
