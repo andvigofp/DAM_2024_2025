@@ -92,7 +92,16 @@ having importe >= 1200;
 solo tienen una venta. 
 */
 
+# Este no funciona
+
 select ve.ven_cliente as cliente, cl.clt_apelidos as apellidos, cl.clt_nome as nombre, ve.ven_data as fecha
 from clientes as cl inner join vendas as ve on cl.clt_id=ve.ven_cliente
 group by cl.clt_id
 having count(*)=1;
+
+# Este es el correcto
+SELECT cl.clt_id, cl.clt_apelidos, cl.clt_nome, ve.ven_data
+FROM clientes cl
+JOIN vendas ve ON cl.clt_id = ve.ven_id
+GROUP BY cl.clt_id, cl.clt_apelidos, cl.clt_nome, ve.ven_data
+HAVING COUNT(*) = 1;

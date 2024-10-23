@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class MEj302 {
+    // Método para la conexion de la base de datos
     public void conection() {
         String usuario= "root";
         String clave= "abc123.";
@@ -21,6 +22,7 @@ public class MEj302 {
             insertarProyecto(conn, 11, "Base de datos", "Lugo", 3);
             amosarProyectos(conn);
             eliminarProyecto(conn, 11);
+            amosarProyectos(conn);
             conn.close();
         }catch (SQLException ex) {
             Logger.getLogger(MEj302.class.getName()).log(Level.SEVERE, null, ex);
@@ -29,9 +31,7 @@ public class MEj302 {
 
     }
 
-
-
-
+    // Método para amosarInformacion BD (Tipo de Gestor , Conector, url y usuario)
     private void amosarInformacionBD(Connection conn) {
         try {
             DatabaseMetaData metaData = conn.getMetaData();
@@ -51,10 +51,12 @@ public class MEj302 {
         }
     }
 
+    // Método para mostar todo lo contiene de la columna Proyecto, de la BD empleddos
     private void amosarProyectos(Connection conn) {
         Statement stmt;
         ResultSet rs;
         String sql = "SELECT * from proyecto";
+
         try {
             stmt = conn.createStatement();
             rs = stmt.executeQuery(sql);
@@ -73,10 +75,12 @@ public class MEj302 {
 
     }
 
+    // Método para insertar valores de la columna proyecto en la BD empleados
     private void insertarProyecto(Connection conn, int nun, String nome, String lugar, int dep) {
         PreparedStatement ps;
         Statement st;
         String sql = "INSERT INTO proyecto VALUES (?,?,?,?);";
+
         try {
             ps = conn.prepareStatement(sql);
             st = conn.createStatement();
@@ -88,14 +92,33 @@ public class MEj302 {
             int numTuplas = ps.executeUpdate();
             System.out.println("Setenza:  " + ps.toString());
             System.out.println("Tuplas afectadas: " + numTuplas);
+
+            st.close();
             ps.close();
         }catch (SQLException ex) {
             Logger.getLogger(MEj302.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    // Método para elimninar un valor en la columna Proyecto de la BD empleados
     private void eliminarProyecto(Connection conn, int num) {
         PreparedStatement ps;
-        String sql = "DELETE FROM proyecto WHERE Numproy"
+        Statement st;
+        String sql = "DELETE FROM proyecto WHERE Numproy = ?;";
+
+        try {
+            ps = conn.prepareStatement(sql);
+            st = conn.createStatement();
+            ps.setInt(1,num);
+            int numTuplas = ps.executeUpdate();
+            System.out.println("Sentenzas " + ps.toString());
+            System.out.println("Tupas afectadas: " + numTuplas);
+
+            st.close();
+            ps.close();
+        }catch (SQLException ex) {
+            Logger.getLogger(MEj302.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }
