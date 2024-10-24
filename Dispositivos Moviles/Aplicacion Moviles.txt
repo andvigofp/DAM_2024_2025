@@ -1,0 +1,7 @@
+Añadir
+Elimninar
+Listar
+Modificar
+
+Botón Modificar
+Botón con formulario Añadir y cancelar
