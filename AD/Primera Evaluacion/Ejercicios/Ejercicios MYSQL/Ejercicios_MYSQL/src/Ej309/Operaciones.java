@@ -30,7 +30,8 @@ public class Operaciones {
         }
     }
 
-    public boolean existsClient(String idCliente) {
+    // Método si existe el cliente por idCliente
+    public boolean existeCliente(String idCliente) {
         PreparedStatement ps;
         try {
             ps = this.conn.prepareStatement("SELECT * FROM client where idClient = ?");
@@ -50,20 +51,18 @@ public class Operaciones {
             return false;
         }
     }
-
-    public boolean existsBook(String idLibro) {
+    // Método si esxiste el libro por codigo del libro
+    public boolean existeLibro(String code) {
         PreparedStatement ps;
         try {
-            ps = this.conn.prepareStatement("SELECT * FROM book where idClient = ?");
+            // Cambiar el campo a 'code' para que coincida con la búsqueda por código de libro
+            ps = this.conn.prepareStatement("SELECT * FROM book WHERE code = ?");
 
-            ps.setString(1, idLibro);
+            ps.setString(1, code);
 
             ResultSet rs = ps.executeQuery();
-            int count = 0;
-            while (rs.next())
-                count++;
-
-            return (count > 0);
+            // Verificar si existe alguna fila con el código de libro proporcionado
+            return rs.next();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -72,7 +71,8 @@ public class Operaciones {
         }
     }
 
-    public boolean isBorrowed(String code) {
+    // Método para prestar un libro
+    public boolean prestado(String code) {
         PreparedStatement ps;
         try {
             ps = this.conn.prepareStatement(
@@ -94,10 +94,11 @@ public class Operaciones {
         }
     }
 
-    public void addLoan(String code, String idCliente) {
-        if (!existsClient(idCliente))
+    // Método para prestar un libro
+    public void prestarLibro(String code, String idCliente) {
+        if (!existeCliente(idCliente))
             System.out.println("No existe el cliente");
-        if (isBorrowed(code))
+        if (prestado(code))
             System.out.println("El libro ya está siendo prestado");
 
         try {
@@ -132,18 +133,33 @@ public class Operaciones {
         }
     }
 
-    public void addReturn(String code) {
-        if (!isBorrowed(code))
+    // Métododo para devolver un libro
+    public void devolverLibro(String code) {
+        // Verificar que el libro existe en la base de datos
+        if (!existeLibro(code)) {
+            System.out.println("El libro no existe en la base de datos");
+            return;
+        }
+
+        // Verificar si el libro está prestado
+        if (!prestado(code)) {
             System.out.println("El libro no está siendo prestado");
+            return;
+        }
 
         try {
-            PreparedStatement ps = this.conn.prepareStatement("UPDATE loan as l, book as b SET "
-                    + "l.borrowed = false WHERE b.idBook = l.idBook and b.code = ? and l.borrowed = true");
+            PreparedStatement ps = this.conn.prepareStatement(
+                    "UPDATE loan AS l, book AS b SET l.borrowed = false " +
+                            "WHERE b.idBook = l.idBook AND b.code = ? AND l.borrowed = true"
+            );
 
             ps.setString(1, code);
 
-            if (ps.executeUpdate() <= 0)
+            if (ps.executeUpdate() <= 0) {
                 System.out.println("Se ha producido un error al devolver un préstamo");
+            } else {
+                System.out.println("El libro ha sido devuelto con éxito");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,7 +167,8 @@ public class Operaciones {
         }
     }
 
-    public ArrayList<Libro> borrowedBooksList() {
+    // Métedodo para listar los libros que pueden ser prestados
+    public ArrayList<Libro> listarLibrosPrestado() {
         PreparedStatement ps;
         ArrayList<Libro> listaLibros = new ArrayList<Libro>();
         try {
@@ -173,7 +190,7 @@ public class Operaciones {
         }
     }
 
-    public ArrayList<Libro> availableBooksList() {
+    public ArrayList<Libro> listaLibrosPuedePrestar() {
         PreparedStatement ps;
         ArrayList<Libro> listaLibros = new ArrayList<Libro>();
         try {
