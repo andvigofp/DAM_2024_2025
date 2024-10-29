@@ -62,6 +62,10 @@ public class Vista extends javax.swing.JFrame{
         jTable1.setModel(model);
     }
 
+    public void mostrarMensaje(String mensaje) {
+        javax.swing.JOptionPane.showMessageDialog(this, mensaje);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
     private void initComponents() {
@@ -90,17 +94,17 @@ public class Vista extends javax.swing.JFrame{
 
         jLabel2.setText("id");
 
-        jLabel3.setText("Name");
+        jLabel3.setText("Nombre");
 
-        jLabel4.setText("Suname");
+        jLabel4.setText("Apellido");
 
-        jLabel5.setText("Age");
+        jLabel5.setText("Edad");
 
-        jButton1.setText("Save");
+        jButton1.setText("Guardar");
 
-        jButton2.setText("Update");
+        jButton2.setText("Actualizar");
 
-        jButton3.setText("Delete");
+        jButton3.setText("Borrar");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

@@ -25,28 +25,34 @@ public class Controlador implements ActionListener {
         try {
             age = Integer.parseInt(datos[3]);
         } catch (NumberFormatException ex) {
-            System.out.println("La edad no es un número válido: " + datos[3]);
+            vista.mostrarMensaje("Error: La edad ingresada no es un número válido.");
             return;
         }
 
         if (e.getActionCommand().equals("GUARDAR")) {
-            Student student = modelo.getStudent(datos[0]);
-            Student new_student = new Student(datos[0], datos[1], datos[2], age);
-            if (student == null) {
-                modelo.addStudent(new_student);
+            Student newStudent = new Student(datos[0], datos[1], datos[2], age);
+            if (modelo.addStudent(newStudent)) {
+                vista.mostrarMensaje("Estudiante guardado exitosamente.");
             } else {
-                modelo.modifyStudent(new_student);
+                vista.mostrarMensaje("Error: No se pudo guardar el estudiante, el ID ya existe o hubo otro problema.");
             }
+
         } else if (e.getActionCommand().equals("ACTUALIZAR")) {
-            Student new_student = new Student(datos[0], datos[1], datos[2], age);
-            modelo.modifyStudent(new_student);
+            Student updatedStudent = new Student(datos[0], datos[1], datos[2], age);
+            if (modelo.modifyStudent(updatedStudent)) {
+                vista.mostrarMensaje("Estudiante actualizado exitosamente.");
+            } else {
+                vista.mostrarMensaje("Error: No se pudo actualizar el estudiante, revisa los datos ingresados.");
+            }
 
         } else if (e.getActionCommand().equals("BORRAR")) {
-            if (modelo.getStudent(datos[0]) != null) {
-                modelo.deleteStudent(datos[0]);
+            if (modelo.deleteStudent(datos[0])) {
+                vista.mostrarMensaje("Estudiante borrado exitosamente.");
+            } else {
+                vista.mostrarMensaje("Error: No se pudo borrar el estudiante, verifica que el ID exista.");
             }
         }
 
-        actualizarTabla(); // Reutiliza el método
+        vista.actualizarDatos(modelo.getStudentsList()); // Actualiza la tabla después de cada operación
     }
 }
