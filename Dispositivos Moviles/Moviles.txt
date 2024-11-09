@@ -1,0 +1,106 @@
+package com.andres.listaproductos
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.andres.listaproductos.ui.theme.ListaProductosTheme
+
+@ExperimentalMaterial3Api
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            ListaProductosTheme {
+                ListaCompraApp()
+            }
+        }
+    }
+
+    @Composable
+    fun ListaCompraApp() {
+        var itemText by remember { mutableStateOf("") }
+        var listaCompra by remember { mutableStateOf(listOf<String>()) }
+
+        // Aquí agregamos contentPadding explícitamente
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            topBar = {
+                Text(
+                    text = "Lista de la compra",
+                    modifier = Modifier.padding(16.dp)
+                )
+            },
+            content = { paddingValues ->  // Recibimos el paddingValues
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)  // Aplicamos el paddingValues aquí
+                        .padding(16.dp),  // También podemos agregar padding adicional si es necesario
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // TextField para ingresar el producto
+                    TextField(
+                        value = itemText,
+                        onValueChange = { itemText = it },
+                        label = { Text("Añadir producto") },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Botón para añadir el producto a la lista
+                    Button(
+                        onClick = {
+                            if (itemText.isNotEmpty()) {
+                                listaCompra = listaCompra + itemText // Agrega el producto a la lista
+                                itemText = "" // Limpia el TextField
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(text = "Añadir")
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // LazyColumn para mostrar la lista de productos
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        items(listaCompra) { item ->  // Utilizamos items(listaCompra) para iterar sobre los elementos
+                            Text(
+                                text = item,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        )
+    }
+
+    @Preview(showBackground = true)
+    @Composable
+    fun DefaultPreview() {
+        ListaProductosTheme {
+            ListaCompraApp()
+        }
+    }
+}			

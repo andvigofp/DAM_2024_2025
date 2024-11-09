@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -43,6 +46,10 @@ import com.example.pantalla.ui.theme.PantallaTheme
 import com.example.pantalla.R
 
 
+data class CoffeData(
+    val nombreCafe: String = "",
+    val precio: Double = 0.0)
+
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,42 +70,62 @@ class MainActivity : ComponentActivity() {
                     var onzas = remember { mutableStateOf("") }
                     var precioTaza = remember { mutableStateOf("") }
                     var totalPagar = remember { mutableStateOf("0.0") }
+
+                    //Lista
+                    val listaCafe = listOf(
+                        CoffeData("Americano", 20.0),
+                        CoffeData("Americano descafinaod", 25.0),
+                        CoffeData("Café de Olla", 23.0),
+                        CoffeData("Capuccino", 23.00),
+                        CoffeData("Capuccino Canela", 25.00),
+                        CoffeData("Capuccino Descalactosado", 25.00),
+                        CoffeData("Frappe",30.0),
+                        CoffeData("Frappe Oreo", 40.0),
+                        CoffeData("Late", 30.0),
+                        CoffeData("Moka", 35.0 )
+                    )
+
                     var context = LocalContext.current
 
                     //Titulo
-                    Text(
-                        modifier = Modifier
-                            .padding(20.dp, 10.dp, 0.dp, 30.dp)
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Start,
-                        fontWeight = FontWeight.ExtraBold,
-                        text = "Bienvenidos",
-                        fontSize = 30.sp,
-                    )
+                    Row ( modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically) {
+                        //TEXTO DE BIENVENIDO
+                        Text(
+                            modifier = Modifier
+                                .weight(0.6f)
+                                .padding(20.dp, 10.dp, 0.dp, 30.dp)
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Start,
+                            fontWeight = FontWeight.ExtraBold,
+                            text = "Bienvenidos",
+                            fontSize = 30.sp,
+                        )
+
+                        //Imagen o logotipo
+                        Image(
+                            modifier = Modifier
+                                .weight(0.4f)
+                                .clip(RoundedCornerShape(20.dp))
+                                .size(100.dp),
+                            painter = painterResource(id = R.drawable.cafe_negro),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    }
 
                     Divider(
                         modifier = Modifier
-                            .padding(vertical = 20.dp)
                             .height(2.dp)
                             .width(300.dp),
                         color = Color.Gray
-                    )
-
-                    //Imagen o logotipo
-                    Image(
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .size(200.dp),
-                        painter = painterResource(id = R.drawable.cafe_negro),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = ""
                     )
 
                     //Tipo de cafe
                     OutlinedTextField(
                         label = { Text(text = "Tipo de café que deseas") },
                         value = tipoCafe.value,
+                        enabled =  false,
                         keyboardOptions = KeyboardOptions(
                             capitalization = KeyboardCapitalization.Sentences,
                             keyboardType = KeyboardType.Text
@@ -111,6 +138,39 @@ class MainActivity : ComponentActivity() {
                             if (tipoCafe.value.length <= 30)
                                 tipoCafe.value = it
                         })
+
+                   //Menú de cafe disponibles
+                   LazyColumn (
+                       modifier = Modifier.height(300.dp)
+                   ) {
+                       itemsIndexed(listaCafe) { pos, cafe ->
+                           Column(
+                               modifier = Modifier
+                                   .clickable {
+                                      tipoCafe.value = cafe.nombreCafe
+                                      precioTaza.value = cafe.precio.toString()
+                                   }
+                                   .fillMaxWidth()
+                                   .padding(top = 5.dp),
+                                   verticalArrangement = Arrangement.Center
+                           ) {
+                               Text(
+                                   modifier = Modifier
+                                       .fillMaxWidth()
+                                       .padding(horizontal = 30.dp)
+                                       .height(40.dp),
+                                   textAlign = TextAlign.Start,
+                                   text = cafe.nombreCafe)
+
+                               Divider(
+                                   modifier = Modifier
+                                       .height(2.dp)
+                                       .fillMaxWidth(),
+                                   color = Color.Gray)
+                           }//Column
+                       }//itemIndexede
+                   }
+
 
                     //Datos de la taza de cafe
                     Row(modifier = Modifier
@@ -143,6 +203,7 @@ class MainActivity : ComponentActivity() {
                                 .padding(horizontal = 5.dp)
                                 .weight(0.5f),
                             label = { Text(text = "Precio") },
+                            enabled = false,
                             value = precioTaza.value,
                             onValueChange = {
                                 if (precioTaza.value.length <=3) {
@@ -174,16 +235,6 @@ class MainActivity : ComponentActivity() {
                     //Muestra el total a pagar
                     Text(text = "Total a pagar ${totalPagar.value}")
 
-                    Row(modifier = Modifier
-                        .padding(vertical = 20.dp)
-                        .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                        Text(text = "hola")
-                        Text(text = "Aqui andamos")
-                        Text(text = "Perfecto")
-                    }//Row
-                    Text(text = "Aquí seguimos")
                 }//Column
             }//Theme
         }//Content

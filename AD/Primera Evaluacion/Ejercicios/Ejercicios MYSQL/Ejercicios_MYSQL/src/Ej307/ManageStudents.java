@@ -49,6 +49,15 @@ public class ManageStudents {
     // Método para añadir un estudiante a la BD school
     public boolean addStudent(Student student) {
         try {
+            PreparedStatement checkStmt = this.conn.prepareStatement("SELECT id FROM student WHERE id = ?");
+            checkStmt.setString(1, student.getId());
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (rs.next()) {
+                // Si el ID ya existe, devuelve false y muestra un mensaje
+                System.out.println("Error: El ID " + student.getId() + " ya existe. No se puede añadir el estudiante.");
+                return false;
+            }
             PreparedStatement ps = this.conn.prepareStatement(" INSERT INTO student VALUES (?, ?, ?, ?)");
 
             ps.setString(1, student.getId());
