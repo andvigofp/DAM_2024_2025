@@ -1,0 +1,2 @@
+Dos conexiones Patrón singleton
+MYSQL y Postegress a la vez
