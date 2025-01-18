@@ -1,0 +1,344 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package com.mycompany.aplicaciondam1;
+
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.*;
+
+/**
+ *
+ * @author laura
+ */
+public class Tarefa4_2 extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Tarefa4_2
+     */
+    public Tarefa4_2() {
+        
+        //crep la ventana
+        JFrame ventana = new JFrame();
+        ventana.setSize(750,700);
+        ventana.setTitle("Tarefa 4. GridBagLayout");
+        ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //el layout utilizado será GridBagLayout//GridBagConstraints
+        ventana.setLayout(new GridBagLayout());
+        GridBagConstraints grid=new GridBagConstraints();
+        
+        grid.fill=GridBagConstraints.BOTH;
+        
+        //creo todos los componentes
+        
+        //creo la profesión que será un JTextField
+        JLabel jLprofesion=new JLabel();
+        jLprofesion.setText("Profesión");
+        JTextField jTprofesion=new JTextField();
+        
+        //creo la edad que será un JComboBox
+        JLabel jLedad=new JLabel();
+        jLedad.setText("Edad");
+        JComboBox jCedad=new JComboBox();
+        
+        jCedad.addItem("Entre 18 y 30 años");
+        jCedad.addItem("Entre 31 y 40 años");
+        jCedad.addItem("Entre 41 y 50 años");
+        jCedad.addItem("Entre 51 y 65 años");        
+        
+        //creo los hermanos que será un JComboBox
+        JLabel jLhermanos = new JLabel();
+        jLhermanos.setText("Nº Hermanos");
+        
+        JComboBox jChermanos = new JComboBox<String>();
+        jChermanos.addItem(0);
+        jChermanos.addItem(1);
+        jChermanos.addItem(2);
+        jChermanos.addItem(3);
+        jChermanos.addItem(4);
+
+        //creo para Sexo dos JRadioButton que los agrupo en un ButtonGroup
+        JLabel jLsexo = new JLabel();
+        jLsexo.setText("Sexo");
+        //creo un ButtonGroup para agrupar los JRadioButton
+        ButtonGroup bgsexo=new ButtonGroup();
+        JRadioButton jRsexof=new JRadioButton();
+        jRsexof.setText("MUJER");
+        JRadioButton jRsexom=new JRadioButton();
+        jRsexom.setText("HOMBRE");
+        bgsexo.add(jRsexof);
+        bgsexo.add(jRsexom);
+        
+        //creo para los deportes un JComboBox
+        JCheckBox jChdeporte = new JCheckBox();
+        
+        
+        jChdeporte.setText("¿Práctica algún deporte?");
+        JLabel jLcdeporte = new JLabel();
+        jLcdeporte.setText("¿Cuál?");
+        JComboBox jCodeporte = new JComboBox<String>();
+        jCodeporte.addItem("Fútbol");
+        jCodeporte.addItem("Tenis");
+        jCodeporte.addItem("Tenis de Mesa");
+        
+        //Ahora creo los Slider para marcar la afición a compras, televisión y cine
+        JLabel jLaficion = new JLabel();
+        jLaficion.setText("Marque de 1 a 10 su grado de afición a:");
+        
+        JLabel jLcompras = new JLabel();
+        jLcompras.setText("Compras");
+
+        JSlider jScompras = new JSlider();
+        jScompras.setMajorTickSpacing(1);
+        jScompras.setMaximum(10);
+        jScompras.setMinimum(1);
+        jScompras.setPaintLabels(true);
+        jScompras.setPaintTicks(true);
+        jScompras.setToolTipText("");
+
+        JLabel jLtelevision = new JLabel();
+        jLtelevision.setText("Ver a televisión");
+
+        JLabel jLcine = new JLabel();
+        jLcine.setText("Ir al cine");
+
+        JSlider jScine = new JSlider();
+        jScine.setMajorTickSpacing(1);
+        jScine.setMaximum(10);
+        jScine.setMinimum(1);
+        jScine.setPaintLabels(true);
+        jScine.setPaintTicks(true);
+
+        //creo los dos botones
+        JButton jBaceptar = new JButton();
+        jBaceptar.setText("Aceptar");
+
+        JButton jBcancelar = new JButton();
+        jBcancelar.setText("Cancelar");
+
+        JSlider jStelevision = new JSlider();
+        jStelevision.setMajorTickSpacing(1);
+        jStelevision.setMaximum(10);
+        jStelevision.setMinimum(1);
+        jStelevision.setPaintLabels(true);
+        jStelevision.setPaintTicks(true);
+        jStelevision.setToolTipText("1");
+        
+        //voy añadiendo los componentes en el layout
+        
+        //gridx-->nº columna
+        //gridy-->nº fila
+        //gridwidth-->número de columnas que ocupa el componente
+        //gridheight-->número de columnas que ocupa el componente
+        grid.gridx=0;
+        grid.gridy=0;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLprofesion,grid);
+        
+        grid.gridx=1;
+        grid.gridy=0;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jTprofesion,grid);
+        
+        grid.gridx=2;
+        grid.gridy=0;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLedad,grid);
+        
+        grid.gridx=3;
+        grid.gridy=0;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jCedad,grid);
+        
+        grid.gridx=0;
+        grid.gridy=1;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLhermanos,grid);
+        
+        
+        grid.gridx=1;
+        grid.gridy=1;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jChermanos,grid);
+        
+        grid.gridx=0;
+        grid.gridy=2;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLsexo,grid);
+        
+        grid.gridx=1;
+        grid.gridy=2;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jRsexom,grid);
+        
+        grid.gridx=2;
+        grid.gridy=2;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jRsexof,grid);
+        
+        grid.gridx=3;
+        grid.gridy=2;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jRsexom,grid);
+        
+        
+        grid.gridx=0;
+        grid.gridy=3;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jChdeporte,grid);
+        
+        
+        
+        grid.gridx=1;
+        grid.gridy=3;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLcdeporte,grid);
+        
+        grid.gridx=2;
+        grid.gridy=3;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jCodeporte,grid);
+        
+        grid.gridx=0;
+        grid.gridy=4;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLaficion,grid);
+        
+        grid.gridx=0;
+        grid.gridy=5;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLcompras,grid);
+        
+        grid.gridx=1;
+        grid.gridy=5;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jScompras,grid);
+        
+        grid.gridx=0;
+        grid.gridy=6;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLtelevision,grid);
+        
+        grid.gridx=1;
+        grid.gridy=6;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jStelevision,grid);
+        
+        grid.gridx=2;
+        grid.gridy=6;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jBaceptar,grid);
+        
+        
+        grid.gridx=3;
+        grid.gridy=6;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jBcancelar,grid);
+        
+        grid.gridx=0;
+        grid.gridy=7;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jLcine,grid);
+        
+        grid.gridx=1;
+        grid.gridy=7;
+        grid.gridwidth=1;
+        grid.gridheight=1;
+        ventana.add(jScine,grid);
+        
+        //hago visible el formulario
+        ventana.setVisible(true);
+        
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Tarefa4_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Tarefa4_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Tarefa4_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Tarefa4_2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Tarefa4_2();
+            }
+        });
+    }
+
+    
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+}

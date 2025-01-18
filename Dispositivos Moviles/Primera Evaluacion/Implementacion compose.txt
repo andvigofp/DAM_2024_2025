@@ -1,0 +1,123 @@
+ Librerías a añadir en gradle
+Listado a incorporar:
+
+
+/*Compose*/
+
+androidx.compose.* para clases de compilador y entorno de ejecución
+androidx.compose.ui.* para el kit de herramientas y las bibliotecas de la IU
+
+/*material*/
+
+implementation("androidx.compose.material3:material3")
+
+implementation("androidx.compose.material:material")
+/* Librería de navigation compose */
+implementation("androidx.navigation:navigation-compose:2.5.3") //antigua
+implementation("androidx.navigation:navigation-runtime-ktx:2.7.6")
+implementation("androidx.navigation:navigation-compose:2.7.6")
+
+
+/* Librería para tener más iconos */
+implementation ("androidx.compose.material:material-icons-extended:1.6.2")
+
+/* Coil */
+implementation("io.coil-kt:coil-compose:2.2.2")
+
+Referenciando una imagen por su URL en la red con Coil (https://coil-kt.github.io/coil/compose/).
+Requiere añadir:
+- La dependencia de Coil en build.gradle
+- Permiso de acceso a Internet en el Manifest
+
+<uses-permission android:name="android.permission.INTERNET"/>
+
+<application
+
+
+/* ViewModel */
+//FORMA1- Para uso de ViewModel en al activity
+implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
+implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+/**FORMA2- Dependencia para poder utilizar las utiilidades de ViewModel en Compose
+* https://developer.android.com/jetpack/androidx/releases/lifecycle
+*/
+val lifecycle_version = "2.7.0";
+implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
+
+/* Librería de LiveData */
+
+implementation("androidx.compose.runtime:runtime-livedata")
+
+
+
+ROOM
+
+implementation("androidx.room:room-runtime:2.6.1")
+implementation("androidx.room:room-ktx:2.6.1")
+annotationProcessor("androidx.room:room-compiler:$room_version")
+// To use Kotlin annotation processing tool (kapt)
+//    kapt("androidx.room:room-compiler:$room_version")//anteriormente
+// To use Kotlin Symbol Processing (KSP)
+    ksp("androidx.room:room-compiler:$room_version")//2.6.1
+
+
+//Gradle Proyecto
+id("com.google.devtools.ksp") version "1.9.21-1.0.15"
+
+//Gradle Modulo
+id("com.google.devtools.ksp")
+
+implementation("androidx.core:core-ktx:1.13.1")
+implementation("androidx.room:room-common:2.6.1")
+implementation("androidx.room:room-ktx:2.6.1")
+ksp("androidx.room:room-compiler:2.6.1")
+
+
+
+API REST
+
+<uses-permission android:name="android.permission.INTERNET" />
+
+DATA STORE
+
+implementation(libs.androidx.datastore.preferences.core.jvm)
+
+   // add DataStore preferences
+    implementation("androidx.datastore:datastore-preferences:1.1.0")
+
+    // optional - RxJava2 support
+    implementation("androidx.datastore:datastore-preferences-rxjava2:1.1.0")
+
+    // optional - RxJava3 support
+    implementation("androidx.datastore:datastore-preferences-rxjava3:1.1.0")
+
+    // For Proto DataStore
+    implementation("androidx.datastore:datastore-core-android:1.1.0")
+    implementation("androidx.test:core-ktx:1.5.0")
+
+    /* build.gradle.kts */
+// add ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+
+    //protobuf
+    implementation ("com.google.protobuf:protobuf-javalite:3.24.3")
+
+MAPS
+
+ //Google Services & Maps
+
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+
+    implementation("com.google.maps.android:maps-compose:1.0.0")
+
+    implementation("com.google.maps.android:maps-compose:2.9.0")
+
+    implementation("com.google.android.gms:play-services-maps:18.2.0")
+
+    // Google Maps Libraries
+
+//    implementation("libs.bundles.googleMaps")
+
+    implementation("com.google.maps.android:android-maps-utils:0.5")
+

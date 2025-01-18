@@ -1,0 +1,26 @@
+Ejercicio 302
+
+Realiza las modificaciones necesarias en el código del ejercicio anterior para crear los siguientes 
+métodos:
+
+. visualizarDepartamento(id): permite visualizar la información de un determinado 
+departamento así como el número y nombre de los empleados adscritos.
+
+. añadirEmpleado(idDepartamento, empleado): permite añadir un determinado departamento 
+un nuevo empleado.
+
+ . Prueba a añadir al departamento 10 un nuevo empleado que tenga los siguientes datos:
+  . Nombre: ANTONIO
+  . Puesto: INVESTIGADOR
+  . Sueldo: 3500€
+  . Edad: 45
+  . DNI: 12345678A
+
+. actualizarJefeDepartamento(idDepart, idEmpl): permite actualizar qué empleado es el jefe 
+de un determinado departamento
+
+ . Prueba a cambiar el jefe de un determinado departamento
+
+. eliminarDepartamento(id): permite eliminar un determinado departamento.
+
+ . Prueba a eliminar el departamento 4.

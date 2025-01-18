@@ -1,0 +1,26 @@
+[
+    {
+        "editorial": "Disney",
+        "paginas": "50",
+        "titulo": "El Hobbit",
+        "autor": "Pedro"
+    },
+    {
+        "editorial": "ABC",
+        "paginas": "190",
+        "titulo": "La Purga",
+        "autor": "Maria"
+    },
+    {
+        "editorial": "Plaza James",
+        "paginas": "500",
+        "titulo": "Resplandor",
+        "autor": "Sofia"
+    },
+    {
+        "editorial": "Pameta Agonistini",
+        "paginas": "1500",
+        "titulo": "La castilla",
+        "autor": "Berto"
+    }
+]

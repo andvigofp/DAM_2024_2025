@@ -1,0 +1,22 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Película icon (clapperboard) -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M10,10 L90,10 L90,50 L10,50 z" />
+
+    <!-- TV screen (for series) -->
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M15,55 L85,55 L85,90 L15,90 z" />
+
+    <!-- Play button inside TV -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,65 L65,75 L35,85 z" />
+
+</vector>

@@ -1,0 +1,13 @@
+Realiza las modificaciones necesarias en el código del ejercicio anterior para crear los siguientes 
+métodos:
+
+. empleadosTécnicos(): permite recuperar el número y nombre de los empleados que son 
+Técnicos.
+
+. empleadoConMayorSueldo(): devuelve el empleado que tenga mayor sueldo.
+
+. aumentarSalarioJefes(int cantidad): permite aumentar el sueldo de todos los jefes una 
+determinada cantidad.
+
+. borrarEmpleadosDepartamento(int idDepartamento): elimina los empleados de un 
+determinado departamento.

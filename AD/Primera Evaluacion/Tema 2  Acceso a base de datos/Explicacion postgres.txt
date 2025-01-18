@@ -1,0 +1,33 @@
+BD (esquema1, esquema2) etc...
+
+ns:persona (1, 2)
+
+ns.persona(1, 2, 3)
+
+C (MYSQL, objeto)
+
+ROW parsea el objeto con sus valores
+
+insert into t1 (id, persona) values ((?, ROW(?, ?))); -- Insertar
+
+Create schema esq1; -- Crear el esquema
+
+Create table es1.table; -- Crear la tabla con su objeto
+
+Crear objeto -> Create type [-----]
+		------------
+		------------ info,
+		);
+
+Create table tabla1
+	persona persona
+);
+
+Select (persona).nombre persoa persona.nombre (nombre o apellido) -- Una consulta con objeto persona que muestra por ejemplo su nombre, apellido o sus dos campss
+
+Select (persona).nombre (persona).apellido as nombre
+
+Resulset resultet = stament.exequery();
+
+rs.getSring(1, "nombre");
+		

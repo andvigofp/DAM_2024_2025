@@ -1,0 +1,626 @@
+/*
+
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+
+ */
+
+package pruebas.componentes;
+
+
+
+/**
+
+ *
+
+ * @author david
+
+ */
+
+import java.awt.Color;
+
+import java.awt.FlowLayout;
+
+import java.awt.Font;
+
+import java.awt.event.ActionEvent;
+
+import java.awt.event.ActionListener;
+
+import javax.swing.ButtonGroup;
+
+import javax.swing.JButton;
+
+import javax.swing.JComboBox;
+
+import javax.swing.JFrame;
+
+import javax.swing.JInternalFrame;
+
+import javax.swing.JLabel;
+
+import javax.swing.JMenu;
+
+import javax.swing.JMenuBar;
+
+import javax.swing.JMenuItem;
+
+import javax.swing.JOptionPane;
+
+import javax.swing.JPanel;
+
+import javax.swing.JProgressBar;
+
+import javax.swing.JRadioButton;
+
+import javax.swing.JScrollPane;
+
+import javax.swing.JSlider;
+
+import javax.swing.JTextArea;
+
+import javax.swing.JTextField;
+
+import javax.swing.border.Border;
+
+import javax.swing.border.CompoundBorder;
+
+import javax.swing.border.EmptyBorder;
+
+import javax.swing.border.LineBorder;
+
+import javax.swing.event.ChangeEvent;
+
+import javax.swing.event.ChangeListener;
+
+
+
+public class Componentes extends JFrame {
+
+
+
+    //COMPONENTES
+
+    static private JProgressBar pg;
+
+    static private JMenuBar bar;
+
+    static private JMenu menu;
+
+    static private JMenuItem menuSli, botones, mInternal;
+
+    static private JLabel etiqueta, jl;
+
+    static JSlider sli;
+
+    static JTextField tf;
+
+    static JInternalFrame internal;
+
+    static JRadioButton radioHombre, RadioMujer;
+
+    ButtonGroup sexo;
+
+    static JComboBox combo;
+
+    static JTextArea ta;
+
+    JScrollPane scrollpane1;
+
+
+
+    JOptionPane jop;
+
+
+
+    JPanel p;
+
+
+
+    public Componentes() {
+
+        // LE QUITAMOS EL LAYOUT POR DEFECTO PARA INDICARLE NOSOTROS LA POSICION
+
+        setLayout(null);
+
+
+
+        //CREAMOS UN BORDE 
+
+        Border line = new LineBorder(Color.BLUE);
+
+        Border margin = new EmptyBorder(5, 15, 5, 15);
+
+        Border compound = new CompoundBorder(line, margin);
+
+
+
+// Se construye el panel que ira dentro del JInternalFrame
+
+        p = new JPanel();
+
+        JLabel labeli = new JLabel("Un label en el internalFrame");
+
+        labeli.setBorder(compound);
+
+        p.add(labeli);
+
+
+
+        p.setForeground(Color.red);
+
+        p.setSize(100, 100);
+
+
+
+        // Se construye un JInternalFrame
+
+        internal = new JInternalFrame("Un Internal Frame");
+
+        internal.setSize(400, 160);
+
+        internal.add(p);
+
+        internal.setResizable(true);
+
+        internal.setClosable(true);
+
+
+
+        add(internal);
+
+        //ETIQUETA PARA EL TITULO
+
+        jl = new JLabel("EJERCICIO CON VARIOS COMPONENTES");
+
+        jl.setBackground(Color.YELLOW);
+
+        jl.setForeground(new Color(132, 192, 199));
+
+        jl.setOpaque(true);
+
+        jl.setBounds(100, 5, 260, 18);
+
+        add(jl);
+
+
+
+        //ITEMS DEL MENU
+
+        menuSli = new JMenuItem("SLIDER");
+
+        botones = new JMenuItem("Ejem de Botones");
+
+        mInternal = new JMenuItem("IR AL INTERNAL FRAME");
+
+        JMenuItem tfuente = new JMenuItem("FUENTE");
+
+        JMenuItem tcolor = new JMenuItem("COLOR");
+
+        JMenu texto = new JMenu("TEXTO");
+
+        texto.getBorder();
+
+
+
+        //AÑADIMOS ESCUCHADORES
+
+        tcolor.addActionListener(new color());
+
+        menuSli.addActionListener(new miSli());
+
+        mInternal.addActionListener(new mInternal());
+
+        botones.addActionListener(new EjBotones());
+
+
+
+        //COMPLETAMOS EL MENU
+
+        menu = new JMenu("Opciones");
+
+        menu.add(menuSli);
+
+        menu.add(botones);
+
+        menu.add(mInternal);
+
+        texto.add(tfuente);
+
+        texto.add(tcolor);
+
+
+
+        bar = new JMenuBar();
+
+        bar.add(menu);
+
+        bar.add(texto);
+
+
+
+        setJMenuBar(bar);
+
+
+
+        ////////////////////////////////////
+
+        pg = new JProgressBar(0, 200);
+
+        sli = new JSlider(0, 200, 100);
+
+
+
+        pg.setBounds(40, 40, 200, 20);
+
+        sli.setBounds(40, 100, 200, 20);
+
+        sli.setMinorTickSpacing(5);
+
+        sli.setMajorTickSpacing(10);
+
+        sli.setPaintTicks(true);
+
+
+
+        //PONEMOS ESCUCHADOR AL SLIDER Y LOS AÑADIMOS
+
+        sli.addChangeListener(new barra());
+
+        add(sli);
+
+        add(pg);
+
+
+
+        //TEXTFIELD QUE MUESTRA EL VALOR DEL SLIDER
+
+        tf = new JTextField(String.valueOf(sli.getValue()), 10);
+
+        pg.setValue(Integer.parseInt(tf.getText()));
+
+        tf.addActionListener(new val());
+
+        tf.setBackground(Color.GREEN);
+
+        tf.setBounds(120, 60, 40, 30);
+
+        add(tf);
+
+
+
+        //RADIOBUTTON
+
+        radioHombre = new JRadioButton("HOMBRE", false);
+
+        RadioMujer = new JRadioButton("MUJER", true);
+
+        RadioMujer.addActionListener(new radio());
+
+        radioHombre.setBounds(300, 100, 100, 20);
+
+        radioHombre.addActionListener(new radio());
+
+        RadioMujer.setBounds(300, 130, 100, 20);
+
+
+
+        add(radioHombre);
+
+        add(RadioMujer);
+
+        sexo = new ButtonGroup();
+
+        sexo.add(radioHombre);
+
+        sexo.add(RadioMujer);
+
+
+
+        //COMBOBOX
+
+        String nombres[] = {"Antonio", "Berto", "Carlos", "Daniel"};
+
+        combo = new JComboBox(nombres);
+
+        combo.addActionListener(new combo());
+
+        combo.setBounds(100, 150, 100, 20);
+
+        add(combo);
+
+
+
+        //TEXTAREA QUE SE AÑADE AL SCROLLPANE1
+
+        ta = new JTextArea("Area para escribir");
+
+        ta.setBounds(100, 400, 200, 200);
+
+        scrollpane1 = new JScrollPane(ta);
+
+        scrollpane1.setBounds(100, 200, 150, 80);
+
+        add(scrollpane1);
+
+
+
+        JButton botonO = new JButton("Ejecutar OptionPane");
+
+        botonO.addActionListener(new opcion());
+
+        botonO.setBorder(compound);
+
+        p.setBorder(compound);
+
+
+
+        botonO.setBounds(100, 300, 160, 60);
+
+        add(botonO);
+
+
+
+        //METODOS DEL FRAME
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        setLocationRelativeTo(null);
+
+        getContentPane().setBackground(Color.WHITE);
+
+        setSize(500, 440);
+
+        setResizable(false);
+
+        setTitle("COMPONENTES");
+
+        setVisible(true);
+
+    }
+
+
+
+    //ESCUCHADORES
+
+    private static class opcion implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            int seleccion = JOptionPane.showOptionDialog(null, "Seleccione una opcion",
+
+                    "Selector de opciones si no cancelar con null", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, // null para icono por defecto.
+
+                    new Object[]{"opcion 1", "opcion 2", "SALIR",}, // null para YES, NO y CANCEL
+
+                    "opcion 1");
+
+
+
+            if (seleccion != -1) {
+
+                JOptionPane.showMessageDialog(null, "Has escogido: " + (seleccion + 1),
+
+                        "WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
+
+            }
+
+            if (seleccion == 2) {
+
+                JOptionPane.showMessageDialog(null, "HASTA LA VISTA",
+
+                        "WARNING_MESSAGE", JOptionPane.WARNING_MESSAGE);
+
+                //TERMINA LA EJECUCION DEL PROGRAMA
+
+                System.exit(0);
+
+            }
+
+        }
+
+    }
+
+
+
+    private static class mInternal implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            JInternalFrame ji = new JInternalFrame("Ventana interna");
+
+            ji.setBounds(10, 10, 100, 50);
+
+            internal.setVisible(true);
+
+        }
+
+    }
+
+
+
+    private static class val implements ActionListener {
+
+
+
+        String valor;
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+
+
+            valor = tf.getText();
+
+            sli.setValue(Integer.parseInt(valor));
+
+            pg.setValue(Integer.parseInt(valor));
+
+        }
+
+    }
+
+
+
+    private static class barra implements ChangeListener {
+
+
+
+        @Override
+
+        public void stateChanged(ChangeEvent e) {
+
+            tf.setText(String.valueOf(sli.getValue()));
+
+            pg.setValue(sli.getValue());
+
+        }
+
+    }
+
+
+
+    private static class color implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            jl.setBackground(Color.red);
+
+            jl.setForeground(Color.blue);
+
+            jl.setFont(new Font("arial", 2, 20));
+
+
+
+        }
+
+    }
+
+
+
+    private static class radio implements ActionListener {
+
+
+
+        String mensaje = "Sexo elegido: ";
+
+
+
+        public void actionPerformed(ActionEvent e) {
+
+
+
+            if (radioHombre.isSelected()) {
+
+                mensaje = "Sexo elegido:  Hombre";
+
+            } else {
+
+                mensaje = "Sexo elegido:  Mujer";
+
+            }
+
+
+
+            jl.setText(mensaje);
+
+
+
+        }
+
+    }
+
+
+
+    private static class combo implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            jl.setText(combo.getSelectedItem().toString());
+
+            if (ta.getText() == "Area para escribir") {
+
+                System.out.println("empieza ta");
+
+                ta.setText("");
+
+                ta.append(combo.getSelectedItem().toString() + "\n");
+
+
+
+            } else {
+
+                System.out.println(" ta va por el else");
+
+
+
+                ta.append("\n " + combo.getSelectedItem().toString());
+
+
+
+            }
+
+        }
+
+    }
+
+
+
+    private static class miSli implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            EjemploSlider es = new EjemploSlider();
+
+        }
+
+    }
+
+
+
+    private static class EjBotones implements ActionListener {
+
+
+
+        @Override
+
+        public void actionPerformed(ActionEvent e) {
+
+            ButtonDemo es = new ButtonDemo();
+
+        }
+
+    }
+
+
+
+    public static void main(String[] args) {
+
+        Componentes c = new Componentes();
+
+    }
+
+}
+

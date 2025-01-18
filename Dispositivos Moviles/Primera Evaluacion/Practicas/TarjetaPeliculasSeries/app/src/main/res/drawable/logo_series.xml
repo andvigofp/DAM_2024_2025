@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Pantalla de TV (para series) -->
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M15,55 L85,55 L85,90 L15,90 z" />
+
+    <!-- Botón de reproducción dentro de la TV -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,65 L65,75 L35,85 z" />
+</vector>
