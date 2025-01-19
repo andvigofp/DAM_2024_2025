@@ -14,7 +14,7 @@ import org.hibernate.Session;
 public class App 
 {
     public static void main(String[] args) {
-        System.out.println("Test");
+        System.out.println("Ejercicio 302");
 
         Session session = HibernateUtil.get().openSession();
 

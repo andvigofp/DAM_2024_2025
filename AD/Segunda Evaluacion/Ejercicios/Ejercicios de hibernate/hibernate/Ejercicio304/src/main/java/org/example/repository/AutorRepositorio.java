@@ -53,12 +53,12 @@ public class AutorRepositorio implements Repositorio<Autor> {
                 Query deleteTelefono = session.createNativeQuery(
                         "DELETE t " +
                                 "FROM Telefonos t " +
-                                "INNER JOIN Autores a ON t.autor_DniAutor = a.DniAutor " +
+                                "INNER JOIN Autores a ON t.DniAutor = a.DniAutor " + // Usar el nombre correcto de la columna en la tabla `Telefonos`
                                 "WHERE a.DniAutor = :dni"
                 );
-
                 deleteTelefono.setParameter("dni", t.getDniAutor());
                 deleteTelefono.executeUpdate();
+
 
                 // Limpiar la lista de libros del autor para evitar referencias circulares
                 t.getListaLibros().clear();

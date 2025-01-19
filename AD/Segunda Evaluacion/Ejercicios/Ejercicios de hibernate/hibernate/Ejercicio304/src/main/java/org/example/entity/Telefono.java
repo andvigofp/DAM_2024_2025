@@ -13,6 +13,7 @@ public class Telefono implements Serializable {
 
     @Id
     @OneToOne
+    @JoinColumn(name = "DniAutor", referencedColumnName = "DniAutor")
     private Autor autor;
 
     @Column(name = "NumeroTf")
