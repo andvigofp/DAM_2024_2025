@@ -5,8 +5,10 @@ import org.example.entity.Cliente;
 import org.example.entity.Libro;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.loader.ast.spi.Loadable;
 import org.hibernate.query.Query;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -51,7 +53,9 @@ public class AlquilerRepositorio {
                     comprobarCliente.setParameter("idCliente", idCliente);
                     Cliente cliente = comprobarCliente.getSingleResult();
 
-                    Alquiler alquiler = new Alquiler(new Date(), true);
+                    LocalDate fecha = LocalDate.now();
+
+                    Alquiler alquiler = new Alquiler(fecha, true);
                     alquiler.setCliente(cliente);
                     alquiler.setLibro(libro);
                     alquiler.setAlquilado(true);

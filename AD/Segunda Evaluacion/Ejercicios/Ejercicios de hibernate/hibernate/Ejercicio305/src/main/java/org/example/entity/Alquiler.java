@@ -1,13 +1,16 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
 @Table(name = "alquiler")
@@ -17,8 +20,8 @@ public class Alquiler {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idAlquiler;
 
-    @Temporal(TemporalType.DATE) // Añadir esta línea para indicar que es de tipo DATE
-    private Date fecha;
+    //@Temporal(TemporalType.DATE) // Añadir esta línea para indicar que es de tipo DATE
+    private LocalDate fecha;
 
     private boolean alquilado;
 
@@ -30,7 +33,7 @@ public class Alquiler {
     @JoinColumn(name = "idCliente")
     private Cliente cliente;
 
-    public Alquiler(Date fecha, boolean alquilado) {
+    public Alquiler(LocalDate fecha, boolean alquilado) {
         super();
         this.fecha = fecha;
         this.alquilado = alquilado;
