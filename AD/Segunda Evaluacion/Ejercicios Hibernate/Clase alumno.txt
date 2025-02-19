@@ -1,0 +1,15 @@
+Entidad normal
+
+@Entity			POO		SQL
+@Table(name="alumno");			alumno - id
+public Alumno {				       - nota-alumno - decimal(10)
+
+	@Id
+	@GenrateValue(stragy=GenerationType.Identify)
+	private int id;
+
+	@Column(name ='nota alumno', column Definitio ='Decimal(10,2)'
+	private double nota;
+}
+
+

@@ -31,6 +31,9 @@ public class FramePpal extends javax.swing.JFrame {
         modeloTabla = new DefaultTableModel(new Object[]{"Nombre", "Color", "Material", "Ancho", "Alto", "Fondo"}, 0);
         jTMoblesDisponibles.setModel(modeloTabla);
         
+          // Hacer que la tabla no sea visible inicialmente
+        jTMoblesDisponibles.setVisible(false);
+        
         // Desactivar botones inicialmente
         jElimnarMoble.setEnabled(false);
         jElimnarTodas.setEnabled(false);
@@ -68,6 +71,8 @@ public class FramePpal extends javax.swing.JFrame {
 
         modeloTabla.addRow(new Object[]{mueble.getNombre(), mueble.getColor(), mueble.getMaterial(), mueble.getAncho(), mueble.getAlto(), mueble.getFondo()});
 
+        JOptionPane.showMessageDialog(this, "Añadido correctamente el mueble", "Exito", JOptionPane.INFORMATION_MESSAGE);
+        
         // Habilitar botones después de agregar un mueble
         jElimnarMoble.setEnabled(true);
         jElimnarTodas.setEnabled(true);
@@ -75,6 +80,9 @@ public class FramePpal extends javax.swing.JFrame {
 
         // Ocultar mensaje cuando hay muebles disponibles
         mensaje.setVisible(false);
+        
+        // Hacer la tabla visible ahora que hay muebles
+        jTMoblesDisponibles.setVisible(true);
 
         // Limpiar los campos de texto después de agregar el mueble
         limpiarCampos();
@@ -105,17 +113,27 @@ public class FramePpal extends javax.swing.JFrame {
     }
     
     
-     private void mostrarMueble() {
-        int selectedRow = jTMoblesDisponibles.getSelectedRow();
-        if (selectedRow != -1) {
-            Mueble mueble = controlador.obtenerMueble(selectedRow);
-            String detalles = String.format("Nombre: %s\nColor: %s\nMaterial: %s\nAncho: %d\nAlto: %d\nFondo: %d",
-                    mueble.getNombre(), mueble.getColor(), mueble.getMaterial(), mueble.getAncho(), mueble.getAlto(), mueble.getFondo());
-            JOptionPane.showMessageDialog(this, detalles);
-        } else {
-            JOptionPane.showMessageDialog(this, "Selecciona un mueble para mostrar");
+   private void mostrarMueble() {
+    int[] selectedRows = jTMoblesDisponibles.getSelectedRows(); // Obtener todas las filas seleccionadas
+    
+    if (selectedRows.length > 0) {
+        StringBuilder detalles = new StringBuilder();  // Usamos StringBuilder para concatenar las cadenas de texto de forma eficiente
+
+        // Recorremos las filas seleccionadas
+        for (int rowIndex : selectedRows) {
+            Mueble mueble = controlador.obtenerMueble(rowIndex); // Obtener el mueble según la fila seleccionada
+            detalles.append(String.format("Nombre: %s\nColor: %s\nMaterial: %s\nAncho: %d\nAlto: %d\nFondo: %d\n\n",
+                    mueble.getNombre(), mueble.getColor(), mueble.getMaterial(),
+                    mueble.getAncho(), mueble.getAlto(), mueble.getFondo()));
         }
+
+        // Mostrar los detalles de todos los muebles seleccionados
+        JOptionPane.showMessageDialog(this, detalles.toString());
+    } else {
+        JOptionPane.showMessageDialog(this, "Selecciona al menos un mueble para mostrar");
     }
+}
+
      
      
      // Getters para los componentes
@@ -333,7 +351,6 @@ public class FramePpal extends javax.swing.JFrame {
             }
         ));
         jTMoblesDisponibles.setToolTipText("");
-        jTMoblesDisponibles.setEnabled(false);
         jScrollPane2.setViewportView(jTMoblesDisponibles);
 
         jInforme.setText("Informe dos  mobles");

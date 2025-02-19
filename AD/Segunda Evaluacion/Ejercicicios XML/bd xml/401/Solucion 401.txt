@@ -1,0 +1,33 @@
+Solución
+
+1- Nombre del propietario de la agenda.
+/agenda/propietario/identificadores/nombre
+
+//propietario/identificadores/nombre
+
+//propietario//nombre
+
+2- Teléfono de casa del propietario.
+/agenda/propietario/telefonos/casa
+
+//propietario/telefonos/casa
+
+//propietario//casa
+
+3- Nombres y apellidos de los contactos de la agenda.
+//contactos/persona/identificadores/nombre | //contactos/persona/identificadores/apellidos
+
+4- Nombre e identificador de cada contacto.
+//contactos/persona/identificadores/nombre | //contactos/persona/@id
+
+5- Datos del contacto con identificador p02.
+//contactos/persona[@id="p02"]/*/*
+
+6- Identificadores de los contactos que tienen móvil.
+//contactos/persona/telefonos/movil/../../@id
+
+//persona//movil/../../@id
+
+/agenda/contactos/persona[exists(telefonos/movil)]/@id
+
+//persona[exists(telefonos/movil)]/@id

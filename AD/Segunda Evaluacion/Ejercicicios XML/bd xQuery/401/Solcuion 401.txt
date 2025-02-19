@@ -1,0 +1,159 @@
+1- Título y editorial de todos los libros.
+for $x in /biblioteca/libros/libro
+return <libro>{$x/titulo/text()} - {$x/editorial/text()}</libro>
+
+Igual que ocurre en XPath, se pueden obtener los mismos datos de diferentes formas. A continuación, se muestra una alternativa utilizando la función concat():
+
+for $x in /biblioteca/libros/libro
+return <libro>{ concat($x/titulo/text(), ' - ', $x/editorial/text()) }</libro>
+
+La función concat() permite concatenar varias cadenas de texto. La concatenación consiste en la unión secuencial (una detrás de otra) de múltiples cadenas de texto.
+
+El resultado de la consulta anterior aplicado al documento XML de ejemplo es el siguiente:
+
+<libro>XML en acción - Manning Publications</libro>
+<libro>XSLT Cookbook - O'Reilly Media</libro>
+<libro>XML 1.1 Bible - Wiley</libro>
+<libro>Introducción a XML y XML Schema - Manning Publications</libro>
+<libro>XML: Visual QuickStart Guide - Peachpit Press</libro>
+<libro>XML and InDesign: Stylish Structure: Publishing XML with Adobe InDesign - Adobe Press</libro>
+<libro>XML Schema: The W3C's Object-Oriented Descriptions for XML - O'Reilly Media</libro>
+<libro>Beginning XML - Wrox</libro>
+<libro>XQuery: Search Across a Variety of XML Data - O'Reilly Media</libro>
+<libro>XML Pocket Reference - O'Reilly Media</libro>
+
+
+2- El título de todos los libros de menos de 400 páginas.
+Para hacer comparaciones con números, lo mejor es convertir los datos con la función number() para evitar problemas de tipo de dato o que los compare como cadenas de texto (string).
+
+Además, utilizamos la función data() para obtener únicamente el contenido. Si no utilizamos data(), se devuelven los elementos con sus etiquetas.
+
+for $x in /biblioteca/libros/libro
+where number($x/paginas) < 400
+return data($x/titulo)
+
+El resultado de la consulta es el siguiente:
+
+XML and InDesign: Stylish Structure: Publishing XML with Adobe InDesign
+XML Pocket Reference
+
+3- La cantidad de libros de más de 400 páginas.
+Para realizar un recuento, se debe utilizar la función count().
+
+let $libros := /biblioteca/libros/libro[number(paginas) > 400]
+return count($libros)
+
+Una alternativa sin utilizar let es la siguiente:
+
+count(
+  for $libro in /biblioteca/libros/libro
+  where number($libro/paginas) > 400  
+  return $libro
+)
+
+En esta última consulta, obtenemos los libros mediante for y realizamos el filtrado utilizando where. Una vez obtenemos la secuencia de elementos filtrada, realizamos el recuento con count(). Para ello, la estructura for-where-return debe ir como parámetro de la función.
+
+El resultado de ambas consultas es el siguiente:
+
+7
+
+4- Una lista HTML con el título de los libros de la editorial O'Reilly Media ordenados por título.
+Podemos mezclar etiquetas HTML y XQuery y obtener HTML como resultado de una consulta.
+
+<ul>
+  {
+    for $libro in /biblioteca/libros/libro
+    where $libro/editorial = "O'Reilly Media"
+    order by $libro/titulo
+    return <li>{data($libro/titulo)}</li>
+  }
+</ul>
+
+El resultado de la consulta es el siguiente:
+
+<ul>
+  <li>XML Pocket Reference</li>
+  <li>XML Schema: The W3C's Object-Oriented Descriptions for XML</li>
+  <li>XQuery: Search Across a Variety of XML Data</li>
+  <li>XSLT Cookbook</li>
+</ul>
+
+5- Título y editorial de los libros de 2018 y 2019.
+for $libro in /biblioteca/libros/libro
+where $libro[@publicacion=2018 or @publicacion=2019]
+return <libro>{$libro/titulo, $libro/editorial}</libro>
+
+Una consulta alternativa con la sintaxis ligeramente diferente es la siguiente:
+
+for $libro in /biblioteca/libros/libro
+where $libro[@publicacion=2018] or $libro[@publicacion=2019]
+return <libro>{$libro/titulo} {$libro/editorial}</libro>
+
+El resultado de la consulta es el siguiente:
+
+<libro>
+  <titulo>XQuery: Search Across a Variety of XML Data</titulo>
+  <editorial>O'Reilly Media</editorial>
+</libro>
+<libro>
+  <titulo>XML Pocket Reference</titulo>
+  <editorial>O'Reilly Media</editorial>
+</libro>
+
+6- Título y editorial de los libros con más de un autor.
+for $libro in /biblioteca/libros/libro
+where count($libro/autor) > 1
+return <libro>{$libro/titulo, $libro/editorial}</libro>
+
+El resultado de la consulta es el siguiente:
+
+<libro>
+  <titulo>XML 1.1 Bible</titulo>
+  <editorial>Wiley</editorial>
+</libro>
+
+7- Título y año de publicación de los libros que tienen versión electrónica.
+for 
+  $libro in /biblioteca/libros/libro
+where 
+  $libro/edicionElectronica
+return 
+  <libro>
+    {$libro/titulo}
+    <fecha-publicacion>{data($libro/@publicacion)}</fecha-publicacion>
+  </libro>
+
+El resultado de la consulta es el siguiente:
+
+<libro>
+  <titulo>XML en acción</titulo>
+  <fecha-publicacion>2008</fecha-publicacion>
+</libro>
+<libro>
+  <titulo>XML and InDesign: Stylish Structure: Publishing XML with Adobe InDesign</titulo>
+  <fecha-publicacion>2011</fecha-publicacion>
+</libro>
+<libro>
+  <titulo>Beginning XML</titulo>
+  <fecha-publicacion>2013</fecha-publicacion>
+</libro>
+<libro>
+  <titulo>XQuery: Search Across a Variety of XML Data</titulo>
+  <fecha-publicacion>2018</fecha-publicacion>
+</libro>
+
+8- Título de los libros que no tienen versión electrónica.
+Se utiliza la función not() para verificar la no existencia de un elemento.
+
+for $libro in /biblioteca/libros/libro
+where not($libro/edicionElectronica)
+return $libro/titulo/text()
+
+El resultado de la consulta es el siguiente:
+
+XSLT Cookbook
+XML 1.1 Bible
+Introducción a XML y XML Schema
+XML: Visual QuickStart Guide
+XML Schema: The W3C's Object-Oriented Descriptions for XML
+XML Pocket Reference
